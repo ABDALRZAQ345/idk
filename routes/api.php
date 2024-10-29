@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Auth\StudentAuthController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['throttle:api'])->group(function () {
@@ -17,8 +18,21 @@ Route::middleware(['throttle:api'])->group(function () {
     //        Route::delete('/delete_account', [AuthController::class, 'delete'])->middleware('email_verified')->name('delete-account');
     //    });
 
-    Route::post('/register', [\App\Http\Controllers\Auth\StudentAuthController::class, 'register']);
-    Route::post('/login', [\App\Http\Controllers\Auth\StudentAuthController::class, 'login']);
+    Route::post('/register', [StudentAuthController::class, 'register'])
+        ->middleware('throttle:api')
+        ->name('register');
+
+    Route::post('/login', [StudentAuthController::class, 'login'])
+        ->name('login');
+
+    Route::post('/send-confirmation-code', [StudentAuthController::class, 'sendConfirmationCode'])
+        ->middleware('throttle:send_confirmation_code')
+        ->name('send.confirmation.code');
+
+    Route::post('/logout', [StudentAuthController::class, 'logout'])
+        ->middleware('auth:sanctum')
+        ->name('logout');
+
     Route::get('/', function () {
 
         $student = Auth::user();
