@@ -5,11 +5,12 @@ namespace Database\Seeders;
 use App\Models\Group;
 use App\Models\Mosque;
 use App\Models\Student;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\User;
-use App\Services\GroupService;
+use App\Services\Group\GroupService;
 use Illuminate\Database\Seeder;
 use Laravel\Sanctum\Sanctum;
+
+// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class DatabaseSeeder extends Seeder
 {

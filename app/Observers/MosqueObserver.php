@@ -13,7 +13,7 @@ class MosqueObserver
      */
     public function created(Mosque $mosque): void
     {
-
+        // creating the rules for each new mosque
         $roles = RoleEnum::getAllRoles();
         foreach ($roles as $role) {
             $role = $mosque->roles()->create(['name' => $role]);

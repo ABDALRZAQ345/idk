@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Group;
 
-use App\Rules\BelongsToSameMosque;
+use App\Rules\StudentBelongsToSameMosque;
+use App\Rules\StudentNotBelongsToGroupInMosque;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
-class GroupRequest extends FormRequest
+class GroupStudentStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,7 +25,8 @@ class GroupRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => ['required', 'exists:users,id', new BelongsToSameMosque],
+            'students' => ['required', 'array'],
+            'students.*' => ['required', new StudentBelongsToSameMosque, new StudentNotBelongsToGroupInMosque(Auth::user()->mosque->id)],
         ];
     }
 }

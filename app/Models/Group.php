@@ -22,4 +22,9 @@ class Group extends Model
     {
         return $this->belongsToMany(Student::class, 'mosque_student');
     }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 }

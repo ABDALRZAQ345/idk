@@ -12,7 +12,7 @@ class SectionRecitationService extends RecitationService
         parent::__construct(SectionRecitation::class, 'section_recitations');
     }
 
-    public function addSectionRecitation(Student $student, int $sectionId, $rate = null)
+    public function addSectionRecitation(Student $student, int $sectionId, $rate = null): array
     {
         return $this->addRecitation($student, [
             'section_id' => $sectionId,

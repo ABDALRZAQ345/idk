@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
@@ -47,7 +48,14 @@ class Student extends Model
             ->withTimestamps();
     }
 
-    public function confirmation_code()
+    public function hasGroup($mosque): bool
+    {
+        return $this->belongsToMany(Group::class, 'mosque_student')
+            ->wherePivot('mosque_id', $mosque)
+            ->exists();
+    }
+
+    public function confirmation_code(): MorphOne
     {
         return $this->morphOne(ConfirmationCode::class, 'confirmable');
     }

@@ -12,16 +12,17 @@ class PageRecitationService extends RecitationService
         parent::__construct(PageRecitation::class, 'page_recitations');
     }
 
-    public function addPageRecitation(Student $student, int $startPage, int $endPage, $rate = null)
+    public function addPageRecitation(Student $student, int $startPage, int $endPage, $rate = null): array
     {
         return $this->addRecitation($student, [
             'start_page' => $startPage,
             'end_page' => $endPage,
             'rate' => $rate,
         ]);
+
     }
 
-    public function updatePageRecitation(Student $student, int $id, int $startPage, int $endPage, $rate = null)
+    public function updatePageRecitation(Student $student, int $id, int $startPage, int $endPage, $rate = null): array
     {
         return $this->updateRecitation($student, $id, [
             'start_page' => $startPage,

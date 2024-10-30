@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * get the minimum element not in the array
+ */
 if (! function_exists('getMex')) {
     function getMex($numbers): int
     {

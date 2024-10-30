@@ -7,6 +7,7 @@ use App\Http\Requests\Recitation\SectionRecitationRequest;
 use App\Models\Mosque;
 use App\Models\Student;
 use App\Services\Recitation\SectionRecitationService;
+use Illuminate\Http\JsonResponse;
 
 class SectionRecitationController extends Controller
 {
@@ -17,17 +18,17 @@ class SectionRecitationController extends Controller
         $this->sectionRecitationService = $sectionRecitationService;
     }
 
-    public function index(Mosque $mosque, Student $student)
+    public function index(Mosque $mosque, Student $student): JsonResponse
     {
         $section_recitation = $this->sectionRecitationService->getRecitations($student, $mosque);
 
         return response()->json([
-            'section_recitation' => $section_recitation,
+            $section_recitation,
         ]);
 
     }
 
-    public function store(SectionRecitationRequest $request, Student $student)
+    public function store(SectionRecitationRequest $request, Student $student): JsonResponse
     {
         $validated = $request->validated();
         $data = $this->sectionRecitationService->addSectionRecitation($student, $validated['section_id']);
@@ -38,7 +39,7 @@ class SectionRecitationController extends Controller
 
     }
 
-    public function update(SectionRecitationRequest $request, Student $student, $section_recitation_id)
+    public function update(SectionRecitationRequest $request, Student $student, $section_recitation_id): JsonResponse
     {
         $validated = $request->validated();
         $data = $this->sectionRecitationService->updateSectionRecitation($student, $section_recitation_id, $validated['section_id']);
@@ -48,7 +49,7 @@ class SectionRecitationController extends Controller
         ], $data['status']);
     }
 
-    public function delete(Student $student, $sectionRecitation_id)
+    public function delete(Student $student, $sectionRecitation_id): JsonResponse
     {
         $this->sectionRecitationService->deleteRecitation($student, $sectionRecitation_id);
 

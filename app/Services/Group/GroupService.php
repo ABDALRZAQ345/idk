@@ -1,18 +1,45 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Group;
 
+use App\Exceptions\FORBIDDEN;
 use App\Models\Group;
 use App\Models\Mosque;
 use App\Models\Student;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Mockery\Exception;
 
 class GroupService
 {
     /**
      * @throws \Exception
      */
+
+    // pass array of students id which you want to add them to group return true if adding success else false
+    public function addStudentsToGroup($students, $group): bool
+    {
+        try {
+
+            DB::beginTransaction();
+
+            foreach ($students as $student) {
+                DB::table('mosque_student')
+                    ->where('student_id', $student)
+                    ->where('mosque_id', $group->mosque->id)
+                    ->update(['group_id' => $group->id]);
+            }
+            DB::commit();
+
+            return true;
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            return false;
+        }
+    }
+
     public function addStudentToGroup(Student $student, Group $group): void
     {
         $user = User::findOrFail(Auth::id());
@@ -77,6 +104,15 @@ class GroupService
         }
 
         return $groups;
+
+    }
+
+    public function CheckCanAccessGroup(Group $group): void
+    {
+        /// check that they are belongs to the same mosque
+        if (Auth::user()->mosque != $group->mosque) {
+            throw new FORBIDDEN('you are not authorized to access this group');
+        }
 
     }
 }

@@ -50,7 +50,7 @@ abstract class RecitationService
 
         return $this->recitationModel::where('student_id', $student->id)
             ->where('mosque_id', $mosque->id)
-            ->get();
+            ->paginate();
     }
 
     public function deleteRecitation(Student $student, $id)

@@ -7,6 +7,7 @@ use App\Http\Requests\Recitation\SurahRecitationRequest;
 use App\Models\Mosque;
 use App\Models\Student;
 use App\Services\Recitation\SurahRecitationService;
+use Illuminate\Http\JsonResponse;
 
 class SurahRecitationController extends Controller
 {
@@ -17,17 +18,17 @@ class SurahRecitationController extends Controller
         $this->SurahRecitationService = $SurahRecitationService;
     }
 
-    public function index(Mosque $mosque, Student $student)
+    public function index(Mosque $mosque, Student $student): JsonResponse
     {
         $Surah_recitation = $this->SurahRecitationService->getRecitations($student, $mosque);
 
         return response()->json([
-            'Surah_recitation' => $Surah_recitation,
+            $Surah_recitation,
         ]);
 
     }
 
-    public function store(SurahRecitationRequest $request, Student $student)
+    public function store(SurahRecitationRequest $request, Student $student): JsonResponse
     {
         $validated = $request->validated();
         $data = $this->SurahRecitationService->addSurahRecitation($student, $validated['surah_id']);
@@ -38,7 +39,7 @@ class SurahRecitationController extends Controller
 
     }
 
-    public function update(SurahRecitationRequest $request, Student $student, $surah_recitation_id)
+    public function update(SurahRecitationRequest $request, Student $student, $surah_recitation_id): JsonResponse
     {
         $validated = $request->validated();
         $data = $this->SurahRecitationService->updateSurahRecitation($student, $surah_recitation_id, $validated['surah_id']);
@@ -48,7 +49,7 @@ class SurahRecitationController extends Controller
         ], $data['status']);
     }
 
-    public function delete(Student $student, $surahRecitation_id)
+    public function delete(Student $student, $surahRecitation_id): JsonResponse
     {
 
         $this->SurahRecitationService->deleteRecitation($student, $surahRecitation_id);

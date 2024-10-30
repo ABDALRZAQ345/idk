@@ -10,8 +10,8 @@
          "laravel/reverb": "*",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
-        "spatie/laravel-searchable": "*"
-
+        "spatie/laravel-searchable": "*",
+        "ext-http": "*"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.1",
