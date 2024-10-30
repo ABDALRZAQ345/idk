@@ -1,11 +1,15 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+
+use App\Http\Controllers\Auth\StudentAuthController;
+
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\Recitation\PageRecitationController;
 use App\Http\Controllers\Recitation\SectionRecitationController;
 use App\Http\Controllers\Recitation\SurahRecitationController;
 use App\Http\Controllers\StudentController;
+
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['throttle:api'])->group(function () {
@@ -15,6 +19,9 @@ Route::middleware(['throttle:api'])->group(function () {
         Route::get('/mosques/{mosque}/students/{student}/page_recitations',[PageRecitationController::class,'index'])->name('page_recitation.index');
         Route::delete('/students/{student}/page_recitations/{page_recitation}',[PageRecitationController::class,'delete'])->name('page_recitation.delete');
         Route::put('/students/{student}/page_recitations/{page_recitation}',[PageRecitationController::class,'update'])->name('page_recitation.update');
+
+
+ 
 
 
         Route::post('/students/{student}/surah_recitations',[SurahRecitationController::class,'store'])->name('surah_recitation.store');
@@ -35,6 +42,21 @@ Route::middleware(['throttle:api'])->group(function () {
 
 
     });
+       Route::post('/register', [StudentAuthController::class, 'register'])
+        ->middleware('throttle:api')
+        ->name('register');
 
-    Route::post('/register',[AuthController::class,'register'])->name('auth.register');
+    Route::post('/login', [StudentAuthController::class, 'login'])
+        ->name('login');
+
+    Route::post('/send-confirmation-code', [StudentAuthController::class, 'sendConfirmationCode'])
+        ->middleware('throttle:send_confirmation_code')
+        ->name('send.confirmation.code');
+
+    Route::post('/logout', [StudentAuthController::class, 'logout'])
+        ->middleware('auth:sanctum')
+        ->name('logout');
+
+  
+    //Route::post('/register',[AuthController::class,'register'])->name('auth.register');
 });

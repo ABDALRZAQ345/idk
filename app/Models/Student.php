@@ -11,9 +11,9 @@ use Laravel\Sanctum\HasApiTokens;
 
 class Student extends Model
 {
-    use HasApiTokens, HasFactory,Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
-    protected $guarded = ['id', 'phone_number'];
+    protected $guarded = ['id'];
 
     public function surah_recitations(): HasMany
     {
@@ -45,5 +45,10 @@ class Student extends Model
         return $this->belongsToMany(Group::class, 'mosque_student')
             ->withPivot('mosque_id')
             ->withTimestamps();
+    }
+
+    public function confirmation_code()
+    {
+        return $this->morphOne(ConfirmationCode::class, 'confirmable');
     }
 }

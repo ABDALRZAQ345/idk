@@ -4,24 +4,19 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
     public function up(): void
     {
-        Schema::create('students', function (Blueprint $table) {
+        Schema::create('confirmation_codes', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-
-            $table->date('birth_date')->nullable();
-
-            $table->string('phone_number', 10)->unique();
-            $table->rememberToken();
+            $table->morphs('confirmable');
+            $table->char('code', 6)->unique();
+            $table->timestamp('expires_at');
             $table->timestamps();
         });
-
     }
 
     /**
@@ -29,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('students');
+        Schema::dropIfExists('confirmation_codes');
     }
 };

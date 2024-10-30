@@ -127,6 +127,12 @@ return [
             'path' => storage_path('logs/laravel.log'),
         ],
 
+        'confirm_code' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/confirm_code.log'),
+            'level' => 'debug',
+        ]
+
     ],
 
 ];
