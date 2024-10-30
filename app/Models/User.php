@@ -14,7 +14,7 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    protected $guarded = ['id', 'phone_number'];
+    protected $guarded = ['id'];
 
     public function mosque(): BelongsTo
     {
@@ -38,5 +38,9 @@ class User extends Authenticatable
     public function permissions(): HasManyThrough
     {
         return $this->hasManyThrough(Permission::class, Role::class);
+    }
+    public function group(): BelongsTo
+    {
+        return $this->belongsTo(Group::class);
     }
 }
