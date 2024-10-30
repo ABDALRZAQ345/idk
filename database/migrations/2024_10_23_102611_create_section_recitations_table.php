@@ -18,7 +18,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Student::class)->constrained();
             $table->foreignIdFor(Section::class)->constrained();
-            $table->string('rate');
+            $table->string('rate')->nullable();
             $table->foreignIdFor(Mosque::class)->constrained()->cascadeOnDelete();
             $table->timestamps();
         });

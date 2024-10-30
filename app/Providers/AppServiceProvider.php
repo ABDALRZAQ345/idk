@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\Group;
 use App\Models\Mosque;
+use App\Observers\GroupObserver;
 use App\Observers\MosqueObserver;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Eloquent\Model;
@@ -45,6 +47,6 @@ class AppServiceProvider extends ServiceProvider
     public function observers(): void
     {
         Mosque::observe(MosqueObserver::class);
-
+        Group::observe(GroupObserver::class);
     }
 }

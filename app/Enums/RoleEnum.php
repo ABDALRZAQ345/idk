@@ -8,7 +8,9 @@ enum RoleEnum
 
     const Supervisor = 'supervisor';
 
+
     const Receiver = 'receiver';
+
     // Add other roles as needed
 
     public static function getAllRoles(): array

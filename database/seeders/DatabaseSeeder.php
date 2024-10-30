@@ -5,10 +5,12 @@ namespace Database\Seeders;
 use App\Models\Group;
 use App\Models\Mosque;
 use App\Models\Student;
-use App\Models\User;
+
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\User;
 use App\Services\GroupService;
 use Illuminate\Database\Seeder;
+use Laravel\Sanctum\Sanctum;
 
 class DatabaseSeeder extends Seeder
 {
@@ -26,10 +28,11 @@ class DatabaseSeeder extends Seeder
             $mosque->students()->createMany(
                 Student::factory(100)->make()->toArray()
             );
-            User::factory(10)->create([
+           $users= User::factory(10)->create([
                 'mosque_id' => $mosque->id,
                 'role_id' => $mosque->roles->first()->id,
             ]);
+            Sanctum::actingAs($users->first());
             $groups = Group::factory(5)->create([
                 'mosque_id' => $mosque->id,
                 'user_id' => $mosque->users->first()->id,
