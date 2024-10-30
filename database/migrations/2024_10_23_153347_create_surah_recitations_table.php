@@ -16,7 +16,7 @@ return new class extends Migration
     {
         Schema::create('surah_recitations', function (Blueprint $table) {
             $table->id();
-            $table->string('rate');
+            $table->string('rate')->nullable();
             $table->foreignIdFor(Student::class)->constrained();
             $table->foreignIdFor(Surah::class)->constrained();
             $table->foreignIdFor(Mosque::class)->constrained()->cascadeOnDelete();

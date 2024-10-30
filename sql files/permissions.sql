@@ -25,4 +25,5 @@ VALUES
     ('send_request_to_add_points'),
     ('receive_points_request'),
     ('send_notification_to_receivers'),
-    ('send_notification_to_students')
+    ('send_notification_to_students'),
+    ('show_all_groups')

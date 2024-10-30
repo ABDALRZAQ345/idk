@@ -5,6 +5,8 @@ namespace App\Services;
 use App\Models\Group;
 use App\Models\Mosque;
 use App\Models\Student;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class GroupService
 {
@@ -13,9 +15,12 @@ class GroupService
      */
     public function addStudentToGroup(Student $student, Group $group): void
     {
-        $mosque = $group->mosque;
+        $user = User::findOrFail(Auth::id());
+        $mosque = $student->mosques()->findOrFail($user->mosque->id);
+        $group= $mosque->groups()->findOrfail($group->id);
+
         // Check if the student is already attached to the mosque with any group
-        $student = $mosque->students()->find($student->id);
+        $student = $mosque->students()->findOrFail($student->id);
 
         if ($student != null) {
             // Update the existing relationship to set the group
@@ -30,7 +35,10 @@ class GroupService
      */
     public function changeStudentGroup(Student $student, Group $newGroup): void
     {
-        $mosque = $newGroup->mosque;
+        $user = User::findOrFail(Auth::id());
+        $mosque = $student->mosques()->findOrFail($user->mosque->id);
+        $newGroup= $mosque->groups()->findOrfail($newGroup->id);
+
 
         // Check if the student is already attached to the mosque
         $student = $mosque->students()->find($student->id);
@@ -58,4 +66,19 @@ class GroupService
             throw new \Exception('Student is not associated with the specified mosque.');
         }
     }
+
+    public function groups()
+    {
+        $user=User::find(Auth::id());
+        $mosque= $user->mosque;
+        if($user->hasPermission('show_all_groups')){
+            $groups=$mosque->groups;
+        }
+        else {
+            $groups=$user->group;
+        }
+        return $groups;
+
+    }
+
 }

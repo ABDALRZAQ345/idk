@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('students', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->unsignedTinyInteger('age');
+            $table->date('birth_date')->nullable();
             $table->string('phone_number', 10)->unique();
             $table->rememberToken();
             $table->timestamps();

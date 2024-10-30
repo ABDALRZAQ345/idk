@@ -17,7 +17,7 @@ return new class extends Migration
         Schema::create('mosque_student', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Mosque::class)->constrained()->cascadeOnDelete();
-            $table->foreignIdFor(Group::class)->nullable()->constrained();
+            $table->foreignIdFor(Group::class)->nullable()->constrained()->nullOnDelete();
             $table->foreignIdFor(Student::class)->constrained()->cascadeOnDelete();
             $table->unique(['mosque_id', 'student_id']);
             $table->timestamps();
