@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\Group;
 use App\Models\Mosque;
 use App\Models\Student;
-
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\User;
 use App\Services\GroupService;
@@ -28,7 +27,7 @@ class DatabaseSeeder extends Seeder
             $mosque->students()->createMany(
                 Student::factory(100)->make()->toArray()
             );
-           $users= User::factory(10)->create([
+            $users = User::factory(10)->create([
                 'mosque_id' => $mosque->id,
                 'role_id' => $mosque->roles->first()->id,
             ]);

@@ -2,12 +2,9 @@
 
 namespace App\Services;
 
-use App\Models\Group;
 use App\Models\Mosque;
-use App\Models\PageRecitation;
 use App\Models\SectionRecitation;
 use App\Models\Student;
-use App\Models\SurahRecitation;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -15,13 +12,12 @@ use Mockery\Exception;
 
 class SectionRecitationService
 {
-    public function addRecitation(Student $student,int $section,$rate=null)
+    public function addRecitation(Student $student, int $section, $rate = null)
     {
 
         try {
 
-            DB::transaction(function () use ($student,$section, $rate) {
-
+            DB::transaction(function () use ($student, $section, $rate) {
 
                 $user = User::findOrfail(Auth::id());
                 // check that the student is belongs to the same mosque of the user who want to add recitation to it
@@ -30,19 +26,19 @@ class SectionRecitationService
                 $section_recitation = $mosque->section_recitations()->create([
                     'student_id' => $student->id,
                     'section_id' => $section,
-                    'rate' => $rate
+                    'rate' => $rate,
                 ]);
                 /// TODO increase student points
 
-
             });
+
             return [
-                'message' => "Recitation added successfully",
-                'status' => '200'
+                'message' => 'Recitation added successfully',
+                'status' => '200',
             ];
         } catch (Exception $e) {
             return [
-                'message' => 'error  Failed to add recitation: ' . $e->getMessage(),
+                'message' => 'error  Failed to add recitation: '.$e->getMessage(),
                 'status' => '500'];
         }
 
@@ -52,6 +48,7 @@ class SectionRecitationService
     {
         $mosque = $mosque = $student->mosques()->findOrFail($mosque->id);
         $recitations = SectionRecitation::where('student_id', $student->id)->where('mosque_id', $mosque->id)->get();
+
         return $recitations;
     }
 }

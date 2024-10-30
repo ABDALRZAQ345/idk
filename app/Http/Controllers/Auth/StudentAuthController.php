@@ -52,7 +52,7 @@ class StudentAuthController extends Controller
 
         $confirmation_code = $student->confirmation_code;
 
-        if (!$confirmation_code || $confirmation_code->code !== $validated['code']) {
+        if (! $confirmation_code || $confirmation_code->code !== $validated['code']) {
             return response()->json([
                 'message' => 'Invalid code',
             ], Response::HTTP_UNAUTHORIZED);
@@ -81,7 +81,7 @@ class StudentAuthController extends Controller
         $request->user()->currentAccessToken()->delete();
 
         return response()->json([
-            'message' => 'Logged out successfully'
+            'message' => 'Logged out successfully',
         ]);
     }
 }

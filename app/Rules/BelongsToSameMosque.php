@@ -3,17 +3,17 @@
 namespace App\Rules;
 
 use App\Models\User;
-use Closure;
 use Illuminate\Contracts\Validation\Rule;
+
 class BelongsToSameMosque implements Rule
 {
-
     public function passes($attribute, $value)
     {
         // Add your validation logic here
-        $user=User::find(\Auth::id());
-        $second_user=User::find($value);
-       return $user->mosque_id==$second_user->mosque_id;
+        $user = User::find(\Auth::id());
+        $second_user = User::find($value);
+
+        return $user->mosque_id == $second_user->mosque_id;
     }
 
     public function message()

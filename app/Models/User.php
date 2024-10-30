@@ -39,6 +39,7 @@ class User extends Authenticatable
     {
         return $this->hasManyThrough(Permission::class, Role::class);
     }
+
     public function group(): BelongsTo
     {
         return $this->belongsTo(Group::class);

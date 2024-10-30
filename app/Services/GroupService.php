@@ -17,7 +17,7 @@ class GroupService
     {
         $user = User::findOrFail(Auth::id());
         $mosque = $student->mosques()->findOrFail($user->mosque->id);
-        $group= $mosque->groups()->findOrfail($group->id);
+        $group = $mosque->groups()->findOrfail($group->id);
 
         // Check if the student is already attached to the mosque with any group
         $student = $mosque->students()->findOrFail($student->id);
@@ -37,8 +37,7 @@ class GroupService
     {
         $user = User::findOrFail(Auth::id());
         $mosque = $student->mosques()->findOrFail($user->mosque->id);
-        $newGroup= $mosque->groups()->findOrfail($newGroup->id);
-
+        $newGroup = $mosque->groups()->findOrfail($newGroup->id);
 
         // Check if the student is already attached to the mosque
         $student = $mosque->students()->find($student->id);
@@ -69,16 +68,15 @@ class GroupService
 
     public function groups()
     {
-        $user=User::find(Auth::id());
-        $mosque= $user->mosque;
-        if($user->hasPermission('show_all_groups')){
-            $groups=$mosque->groups;
+        $user = User::find(Auth::id());
+        $mosque = $user->mosque;
+        if ($user->hasPermission('show_all_groups')) {
+            $groups = $mosque->groups;
+        } else {
+            $groups = $user->group;
         }
-        else {
-            $groups=$user->group;
-        }
+
         return $groups;
 
     }
-
 }

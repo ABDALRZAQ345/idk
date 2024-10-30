@@ -23,7 +23,7 @@ class GroupRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => ['required', 'exists:users,id',new BelongsToSameMosque()],
+            'user_id' => ['required', 'exists:users,id', new BelongsToSameMosque],
         ];
     }
 }

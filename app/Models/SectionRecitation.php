@@ -9,7 +9,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class SectionRecitation extends Model
 {
     use HasFactory;
-    protected $guarded=['id'];
+
+    protected $guarded = ['id'];
+
     public function student(): BelongsTo
     {
         return $this->belongsTo(Student::class);

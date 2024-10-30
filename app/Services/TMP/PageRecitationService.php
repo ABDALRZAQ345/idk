@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\Group;
 use App\Models\Mosque;
 use App\Models\PageRecitation;
 use App\Models\Student;
@@ -13,13 +12,12 @@ use Mockery\Exception;
 
 class PageRecitationService
 {
-    public function addRecitation(Student $student,int $start_page, int $end_page, $rate = null)
+    public function addRecitation(Student $student, int $start_page, int $end_page, $rate = null)
     {
 
         try {
 
-            DB::transaction(function () use ($student,$start_page, $end_page, $rate) {
-
+            DB::transaction(function () use ($student, $start_page, $end_page, $rate) {
 
                 $user = User::findOrfail(Auth::id());
                 // check that the student is belongs to the same mosque of the user who want to add recitation to it
@@ -29,19 +27,19 @@ class PageRecitationService
                     'student_id' => $student->id,
                     'start_page' => $start_page,
                     'end_page' => $end_page,
-                    'rate' => $rate
+                    'rate' => $rate,
                 ]);
                 /// TODO increase student points
 
-
             });
+
             return [
-                'message' => "Recitation added successfully",
-                'status' => '200'
+                'message' => 'Recitation added successfully',
+                'status' => '200',
             ];
         } catch (Exception $e) {
             return [
-                'message' => 'error  Failed to add recitation: ' . $e->getMessage(),
+                'message' => 'error  Failed to add recitation: '.$e->getMessage(),
                 'status' => '500'];
         }
 
@@ -51,6 +49,7 @@ class PageRecitationService
     {
         $mosque = $mosque = $student->mosques()->findOrFail($mosque->id);
         $recitations = PageRecitation::where('student_id', $student->id)->where('mosque_id', $mosque->id)->get();
+
         return $recitations;
     }
 }

@@ -131,7 +131,7 @@ return [
             'driver' => 'single',
             'path' => storage_path('logs/confirm_code.log'),
             'level' => 'debug',
-        ]
+        ],
 
     ],
 

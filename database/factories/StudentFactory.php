@@ -19,7 +19,7 @@ class StudentFactory extends Factory
         return [
             'name' => fake()->name(),
             'phone_number' => fake()->numberBetween(1, 1e10),
-            'birth_date' => fake()->date()
+            'birth_date' => fake()->date(),
         ];
     }
 }

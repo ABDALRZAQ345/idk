@@ -1,6 +1,6 @@
 <?php
 
-if (!function_exists('getMex')) {
+if (! function_exists('getMex')) {
     function getMex($numbers): int
     {
         // Mex mean first element not in the array
@@ -19,5 +19,3 @@ if (!function_exists('getMex')) {
         return $mex; // Returns the first unassigned  number
     }
 }
-
-

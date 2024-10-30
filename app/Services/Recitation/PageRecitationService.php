@@ -2,8 +2,6 @@
 
 namespace App\Services\Recitation;
 
-
-
 use App\Models\PageRecitation;
 use App\Models\Student;
 
@@ -22,6 +20,7 @@ class PageRecitationService extends RecitationService
             'rate' => $rate,
         ]);
     }
+
     public function updatePageRecitation(Student $student, int $id, int $startPage, int $endPage, $rate = null)
     {
         return $this->updateRecitation($student, $id, [

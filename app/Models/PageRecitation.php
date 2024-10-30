@@ -10,7 +10,7 @@ class PageRecitation extends Model
 {
     use HasFactory;
 
-    protected $guarded=['id'];
+    protected $guarded = ['id'];
 
     public function mosque(): BelongsTo
     {

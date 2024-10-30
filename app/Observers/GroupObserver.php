@@ -3,7 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Group;
-use Illuminate\Support\Facades\Log;
+
 class GroupObserver
 {
     /**
@@ -14,12 +14,11 @@ class GroupObserver
 
         $numbers = Group::where('mosque_id', $group->mosque_id)->orderBy('number', 'asc')->pluck('number')->toArray();
         $mex = getMex($numbers);
-        $group->number = $mex ;
+        $group->number = $mex;
     }
     /**
      *  Handle the Group created
      */
-
 
     /**
      * Handle the Group "updated" event.

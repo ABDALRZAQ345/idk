@@ -29,9 +29,9 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->observers();
 
-        Model::shouldBeStrict(!app()->environment('production'));
+        Model::shouldBeStrict(! app()->environment('production'));
         ///
-        Model::preventLazyLoading(!app()->environment('production'));
+        Model::preventLazyLoading(! app()->environment('production'));
         RateLimiter::for('api', function (Request $request) {
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });

@@ -23,8 +23,8 @@ class PageRecitationRequest extends FormRequest
     {
         return [
 
-            'start_page' => ['required','integer','min:1','max:606'],
-            'end_page' => ['required','integer','gte:start_page','max:606'],
+            'start_page' => ['required', 'integer', 'min:1', 'max:606'],
+            'end_page' => ['required', 'integer', 'gte:start_page', 'max:606'],
         ];
     }
 }

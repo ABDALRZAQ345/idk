@@ -5,7 +5,7 @@ namespace App\Observers;
 use App\Enums\RoleEnum;
 use App\Models\Mosque;
 use App\Models\Permission;
-use Illuminate\Support\Facades\Log;
+
 class MosqueObserver
 {
     /**

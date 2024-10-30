@@ -11,7 +11,8 @@ class Group extends Model
 {
     use HasFactory;
 
-    protected  $guarded=['id'];
+    protected $guarded = ['id'];
+
     public function mosque(): BelongsTo
     {
         return $this->belongsTo(Mosque::class);
