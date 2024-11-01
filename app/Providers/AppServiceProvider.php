@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\Group;
 use App\Models\Mosque;
+use App\Observers\GroupObserver;
 use App\Observers\MosqueObserver;
 use App\Services\PhoneService;
 use App\Services\Students\StudentService;
@@ -56,6 +58,6 @@ class AppServiceProvider extends ServiceProvider
     public function observers(): void
     {
         Mosque::observe(MosqueObserver::class);
-
+        Group::observe(GroupObserver::class);
     }
 }

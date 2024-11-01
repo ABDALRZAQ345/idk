@@ -19,7 +19,7 @@ return new class extends Migration
             $table->unsignedsmallInteger('end_page');
             $table->foreignIdFor(Mosque::class)->constrained()->cascadeOnDelete();
 
-            $table->string('rate');
+            $table->string('rate')->nullable();
             $table->foreignIdFor(Student::class)->constrained()->cascadeOnDelete();
             $table->timestamps();
         });

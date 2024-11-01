@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class SurahRecitation extends Model
 {
     use HasFactory;
-
+    protected $guarded=['id'];
     public function student(): BelongsTo
     {
         return $this->belongsTo(Student::class);
