@@ -4,6 +4,10 @@ namespace App\Providers;
 
 use App\Models\Mosque;
 use App\Observers\MosqueObserver;
+use App\Services\PhoneService;
+use App\Services\Students\StudentService;
+use App\Services\Users\UserAuthService;
+use App\Services\Users\UserService;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -17,7 +21,21 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton(StudentService::class, function ($app) {
+            return new StudentService;
+        });
+
+        $this->app->singleton(UserAuthService::class, function ($app) {
+            return new UserAuthService;
+        });
+
+        $this->app->singleton(UserService::class, function($app) {
+            return new UserService;
+        });
+
+        $this->app->singleton(PhoneService::class, function ($app) {
+            return new PhoneService;
+        });
     }
 
     /**
@@ -33,13 +51,6 @@ class AppServiceProvider extends ServiceProvider
         RateLimiter::for('api', function (Request $request) {
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });
-        RateLimiter::for('send_confirmation_code', function (Request $request) {
-            return [
-                Limit::perMinutes(30, 1)->by($request->ip()), // Limit to 1 request every 30 minutes
-                Limit::perDay(5)->by($request->ip()),         // Limit to 5 requests per day
-            ];
-        });
-
     }
 
     public function observers(): void
