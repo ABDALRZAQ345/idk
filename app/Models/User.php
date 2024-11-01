@@ -14,7 +14,7 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    protected $guarded = ['id', 'phone_number'];
+    protected $guarded = ['id'];
 
     public function mosque(): BelongsTo
     {
