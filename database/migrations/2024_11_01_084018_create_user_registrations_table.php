@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Mosque;
+use App\Models\Role;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -10,11 +12,11 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('confirmation_codes', function (Blueprint $table) {
+        Schema::create('unregistered_users', function (Blueprint $table) {
             $table->id();
-            $table->morphs('confirmable');
-            $table->char('code', 6)->unique();
-            $table->timestamp('expires_at');
+            $table->string('phone_number', 10)->unique();
+            $table->foreignIdFor(Role::class)->constrained();
+            $table->foreignIdFor(Mosque::class)->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }
@@ -24,6 +26,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('confirmation_codes');
+        Schema::dropIfExists('unregistered_users');
     }
 };

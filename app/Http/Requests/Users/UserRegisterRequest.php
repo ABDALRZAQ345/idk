@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Students;
+namespace App\Http\Requests\Users;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Password;
 
-class StudentRegisterRequest extends FormRequest
+class UserRegisterRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -14,9 +15,9 @@ class StudentRegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:50'],
-            'birth_date' => ['required', 'date', 'before_or_equal:' . now()->subYears(5)],
-            'phone_number' => ['required', 'numeric', 'digits:10', 'unique:students,phone_number'],
+            'name' => ['required', 'string', 'max:15'],
+            'password' => ['required', 'confirmed', Password::defaults()],
+            'phone_number' => ['required', 'numeric', 'digits:10', 'exists:unregistered_users,phone_number'],
             'code' => ['required', 'numeric', 'digits:6'],
         ];
     }

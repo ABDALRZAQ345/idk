@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Events\Students;
+namespace App\Events;
 
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
@@ -10,16 +10,18 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class StudentSendConfirmationCode
+class SendVerificationCode
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
+
+    public $phone_number;
 
     /**
      * Create a new event instance.
      */
-    public function __construct($student)
+    public function __construct($phoneNumber)
     {
-        $this->student = $student;
+        $this->phone_number = $phoneNumber;
     }
 
     /**

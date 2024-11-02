@@ -46,9 +46,4 @@ class Student extends Model
             ->withPivot('mosque_id')
             ->withTimestamps();
     }
-
-    public function confirmation_code()
-    {
-        return $this->morphOne(ConfirmationCode::class, 'confirmable');
-    }
 }

@@ -14,7 +14,13 @@ class StudentLoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'phone_number' => ['required', 'numeric', 'digits:10'],
+            'phone_number' => [
+                'required',
+                'numeric',
+                'digits:10',
+                'exists:verification_codes,phone_number',
+                'exists:students,phone_number'
+            ],
             'code' => ['required', 'numeric', 'digits:6'],
         ];
     }
