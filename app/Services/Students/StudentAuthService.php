@@ -2,7 +2,6 @@
 
 namespace App\Services\Students;
 
-use App\Events\SendVerificationCode;
 use App\Http\Requests\Students\StudentLoginRequest;
 use App\Http\Requests\Students\StudentRegisterRequest;
 use App\Models\Student;
@@ -30,7 +29,7 @@ class StudentAuthService
      */
     public function phone(string $phoneNumber)
     {
-        SendVerificationCode::dispatch($phoneNumber);
+        $this->verificationCodeService->send($phoneNumber);
 
         return response()->json([
             'message' => 'Verification code send successfully',

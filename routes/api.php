@@ -7,6 +7,7 @@ use App\Http\Controllers\Recitation\PageRecitationController;
 use App\Http\Controllers\Recitation\SectionRecitationController;
 use App\Http\Controllers\Recitation\SurahRecitationController;
 use App\Http\Controllers\Auth\UserAuthController;
+use App\Http\Controllers\UserForgotPasswordController;
 use App\Http\Controllers\VerificationCodeController;
 use Illuminate\Support\Facades\Route;
 
@@ -80,6 +81,18 @@ Route::middleware(['throttle:api'])->group(function () {
 
             Route::post('/personal-info', [UserAuthController::class, 'register'])
                 ->name('register');
+        });
+
+        Route::name('forgot.password')->prefix('/forgot-password')->group(function () {
+
+            Route::post('/phone-number', [UserForgotPasswordController::class, 'phone'])
+                ->name('phone');
+
+            Route::post('/verification', VerificationCodeController::class)
+                ->name('verify');
+
+            Route::post('/change', [UserForgotPasswordController::class, 'change'])
+                ->name('change');
         });
 
         Route::post('/login', [UserAuthController::class, 'login'])

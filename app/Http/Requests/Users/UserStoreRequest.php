@@ -29,6 +29,7 @@ class UserStoreRequest extends FormRequest
                 'required',
                 'numeric',
                 'digits:10',
+                'exists:verification_codes,phone_number',
                 function ($attribute, $value, $fail) {
                     $existsInUsers = User::where(
                         'phone_number',
@@ -43,7 +44,7 @@ class UserStoreRequest extends FormRequest
                     if ($existsInUsers || $existsInUnregisteredUser) {
                         $fail('The ' . $attribute . ' already exists');
                     }
-                }
+                },
             ],
             'code' => ['required', 'numeric', 'digits:6'],
             'role' => ['required', 'integer', 'min:1', 'exists:roles,id'],

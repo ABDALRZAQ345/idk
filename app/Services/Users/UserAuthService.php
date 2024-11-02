@@ -2,8 +2,8 @@
 
 namespace App\Services\Users;
 
-use App\Events\SendVerificationCode;
 use App\Exceptions\BadCredentialsException;
+use App\Http\Requests\Users\UserForgotPasswordRequest;
 use App\Http\Requests\Users\UserLoginRequest;
 use App\Http\Requests\Users\UserRegisterRequest;
 use App\Models\UnregisteredUser;
@@ -26,13 +26,13 @@ class UserAuthService
     }
 
     /**
-     * Send a verification code to the phone number
+     * Send a verification code
      * @param string $phoneNumber
      * @return mixed|\Illuminate\Http\JsonResponse
      */
     public function phone(string $phoneNumber)
     {
-        SendVerificationCode::dispatch($phoneNumber);
+        $this->verificationCodeService->send($phoneNumber);
 
         return response()->json([
             'message' => 'Verification code send successfully',
@@ -97,7 +97,7 @@ class UserAuthService
             $validated['phone_number']
         )->firstOrFail();
 
-        if (!Hash::check($validated['phone_number'], $user->password)) {
+        if (!Hash::check($validated['password'], $user->password)) {
             throw new BadCredentialsException;
         }
 
@@ -110,6 +110,30 @@ class UserAuthService
             'user_id' => $user->id,
             'access_token' => $token,
             'token_type' => "Bearer",
+        ]);
+    }
+
+    public function forgotPassword(UserForgotPasswordRequest $request)
+    {
+        $validated = $request->validated();
+
+        $this->verificationCodeService->verify($validated['phone_number'], $validated['code']);
+
+        $user = User::where(
+            'phone_number',
+            $validated['phone_number']
+        )->firstOrFail();
+
+        $user->update([
+            'password' => Hash::make($validated['password']),
+        ]);
+
+        $this->verificationCodeService->delete($validated['phone_number']);
+
+        RateLimiter::clear($request->ip());
+
+        return response()->json([
+            'message' => 'User password changed successfully',
         ]);
     }
 

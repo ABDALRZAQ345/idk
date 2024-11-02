@@ -2,12 +2,23 @@
 
 namespace App\Services;
 
+use App\Events\SendVerificationCode;
 use App\Exceptions\VerificationCodeException;
 use App\Models\VerificationCode;
 use Illuminate\Support\Facades\Hash;
 
 class VerificationCodeService
 {
+
+    /**
+     * Send verification code
+     * @param string $phoneNumber
+     * @return void
+     */
+    public function send(string $phoneNumber)
+    {
+        SendVerificationCode::dispatch($phoneNumber);
+    }
 
     /**
      * Check if code belongs to phone number and not expired
