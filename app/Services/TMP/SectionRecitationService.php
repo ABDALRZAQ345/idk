@@ -19,7 +19,7 @@ class SectionRecitationService
 
             DB::transaction(function () use ($student, $section, $rate) {
 
-                $user = User::findOrfail(Auth::id());
+                $user = Auth::user();
                 // check that the student is belongs to the same mosque of the user who want to add recitation to it
                 $mosque = $student->mosques()->findOrFail($user->mosque->id);
                 /// add new page recitation

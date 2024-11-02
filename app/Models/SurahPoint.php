@@ -6,26 +6,19 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Point extends Model
+class SurahPoint extends Model
 {
     use HasFactory;
 
-    protected $guarded = [
-        'id',
-    ];
-
-    public function student(): BelongsTo
-    {
-        return $this->belongsTo(Student::class);
-    }
+    protected $guarded = ['id'];
 
     public function mosque(): BelongsTo
     {
         return $this->belongsTo(Mosque::class);
     }
 
-    public function recitation(): \Illuminate\Database\Eloquent\Relations\MorphTo
+    public function surah(): BelongsTo
     {
-        return $this->morphTo();
+        return $this->belongsTo(Surah::class);
     }
 }

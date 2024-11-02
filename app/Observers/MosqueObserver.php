@@ -22,6 +22,11 @@ class MosqueObserver
                 $role->assignPermission($permission->name);
             }
         }
+        for ($i = 1; $i <= 30; $i++) {
+            $mosque->surah_points()->create([
+                'surah_id' => $i,
+            ]);
+        }
 
     }
 

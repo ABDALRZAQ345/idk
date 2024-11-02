@@ -20,7 +20,7 @@ class SectionRecitationService extends RecitationService
         ]);
     }
 
-    public function updateSectionRecitation(Student $student, int $id, int $sectionId, $rate = null)
+    public function updateSectionRecitation(Student $student, int $id, int $sectionId, $rate = null): array
     {
         return $this->updateRecitation($student, $id, [
             'section_id' => $sectionId,

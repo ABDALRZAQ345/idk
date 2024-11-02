@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Notifications\Notifiable;
@@ -15,6 +14,11 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     protected $guarded = ['id'];
+
+    public function group(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(Group::class);
+    }
 
     public function mosque(): BelongsTo
     {
@@ -28,20 +32,16 @@ class User extends Authenticatable
 
     public function hasPermission($permission)
     {
+
         if ($this->role) {
-            return $this->role->permissions()->where('name', $permission)->exists();
+            return $this->permissions()->where('name', $permission)->exists();
         }
 
         return false;
     }
 
-    public function permissions(): HasManyThrough
+    public function permissions()
     {
-        return $this->hasManyThrough(Permission::class, Role::class);
-    }
-
-    public function group(): BelongsTo
-    {
-        return $this->belongsTo(Group::class);
+        return $this->role->permissions();
     }
 }

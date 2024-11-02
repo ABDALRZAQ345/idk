@@ -26,4 +26,9 @@ class SurahRecitation extends Model
     {
         return $this->belongsTo(Surah::class);
     }
+
+    public function points(): \Illuminate\Database\Eloquent\Relations\MorphOne
+    {
+        return $this->morphOne(Point::class, 'recitation');
+    }
 }

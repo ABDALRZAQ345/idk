@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name', 50);
             $table->string('location', 50);
+            $table->integer('page_points')->default(5);
+            $table->integer('section_points')->default(100);
             $table->timestamps();
         });
     }

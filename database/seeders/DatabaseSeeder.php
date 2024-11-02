@@ -32,10 +32,18 @@ class DatabaseSeeder extends Seeder
                 'mosque_id' => $mosque->id,
                 'role_id' => $mosque->roles->first()->id,
             ]);
+
             Sanctum::actingAs($users->first());
-            $groups = Group::factory(5)->create([
+            $groups = Group::factory(1)->create([
+                'name' => 'name',
                 'mosque_id' => $mosque->id,
                 'user_id' => $mosque->users->first()->id,
+            ]);
+
+            Group::factory(1)->create([
+                'name' => 'name',
+                'mosque_id' => $mosque->id,
+                'user_id' => $users[1]->id,
             ]);
             $group = $groups->first();
             $group_service = new GroupService;

@@ -26,4 +26,9 @@ class SectionRecitation extends Model
     {
         return $this->belongsTo(Section::class);
     }
+
+    public function points(): \Illuminate\Database\Eloquent\Relations\MorphOne
+    {
+        return $this->morphOne(Point::class, 'recitation');
+    }
 }

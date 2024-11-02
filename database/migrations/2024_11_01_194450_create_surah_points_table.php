@@ -1,7 +1,7 @@
 <?php
 
 use App\Models\Mosque;
-use App\Models\Student;
+use App\Models\Surah;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,17 +13,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('points', function (Blueprint $table) {
+        Schema::create('surah_points', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Student::class)->constrained()->cascadeOnDelete();
-            $table->Integer('points');
-            $table->string('reason');
+            $table->foreignIdFor(Surah::class)->constrained();
             $table->foreignIdFor(Mosque::class)->constrained()->cascadeOnDelete();
-
-            $table->unsignedBigInteger('recitation_id')->nullable();
-            $table->string('recitation_type')->nullable();
-            $table->index(['recitation_id', 'recitation_type']);
-
+            $table->unsignedInteger('points')->default(10);
             $table->timestamps();
         });
     }
@@ -33,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('points');
+        Schema::dropIfExists('surah_points');
     }
 };

@@ -6,7 +6,6 @@ use App\Exceptions\FORBIDDEN;
 use App\Models\Group;
 use App\Models\Mosque;
 use App\Models\Student;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Mockery\Exception;
@@ -42,7 +41,7 @@ class GroupService
 
     public function addStudentToGroup(Student $student, Group $group): void
     {
-        $user = User::findOrFail(Auth::id());
+        $user = Auth::user();
         $mosque = $student->mosques()->findOrFail($user->mosque->id);
         $group = $mosque->groups()->findOrfail($group->id);
 
@@ -62,7 +61,7 @@ class GroupService
      */
     public function changeStudentGroup(Student $student, Group $newGroup): void
     {
-        $user = User::findOrFail(Auth::id());
+        $user = Auth::user();
         $mosque = $student->mosques()->findOrFail($user->mosque->id);
         $newGroup = $mosque->groups()->findOrfail($newGroup->id);
 
@@ -95,7 +94,7 @@ class GroupService
 
     public function groups()
     {
-        $user = User::find(Auth::id());
+        $user = Auth::user();
         $mosque = $user->mosque;
         if ($user->hasPermission('show_all_groups')) {
             $groups = $mosque->groups;

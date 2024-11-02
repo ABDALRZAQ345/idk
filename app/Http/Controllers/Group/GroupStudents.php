@@ -21,7 +21,10 @@ class GroupStudents extends Controller
         $this->groupService = $groupService;
     }
 
-    public function index(Group $group)
+    /**
+     * @throws FORBIDDEN
+     */
+    public function index(Group $group): JsonResponse
     {
 
         $this->groupService->CheckCanAccessGroup($group);
@@ -32,7 +35,11 @@ class GroupStudents extends Controller
         ]);
     }
 
-    public function store(GroupStudentStoreRequest $request, Group $group)
+    /**
+     * @throws FORBIDDEN
+     * @throws \Exception
+     */
+    public function store(GroupStudentStoreRequest $request, Group $group): JsonResponse
     {
         $this->groupService->CheckCanAccessGroup($group);
         $validated = $request->validated();

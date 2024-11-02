@@ -12,7 +12,7 @@ class SurahRecitationService extends RecitationService
         parent::__construct(SurahRecitation::class, 'surah_recitations');
     }
 
-    public function addSurahRecitation(Student $student, int $surahId, $rate = null)
+    public function addSurahRecitation(Student $student, int $surahId, $rate = null): array
     {
         return $this->addRecitation($student, [
             'surah_id' => $surahId,
