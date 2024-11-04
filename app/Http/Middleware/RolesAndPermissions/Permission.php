@@ -23,7 +23,7 @@ class Permission
         $user = Auth::user();
 
         if (! $user->hasPermission($permission)) {
-            return response()->json(['message' => 'Forbidden'], Response::HTTP_FORBIDDEN);
+            return response()->json(['message' => 'Unauthorized'], Response::HTTP_UNAUTHORIZED);
         }
 
         return $next($request);

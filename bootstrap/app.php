@@ -17,10 +17,8 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         //
         $middleware->alias([
-
-        ]);
-        $middleware->appendToGroup('permission', [
-            \App\Http\Middleware\RolesAndPermissions\Permission::class,
+            'permission' => \App\Http\Middleware\RolesAndPermissions\Permission::class,
+            'auth.type' => \App\Http\Middleware\CheckAuthType::class
         ]);
 
     })

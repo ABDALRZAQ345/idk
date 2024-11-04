@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -15,6 +16,8 @@ class Student extends Model
     use HasApiTokens, HasFactory, Notifiable;
 
     protected $guarded = ['id'];
+
+    protected $hidden = ['pivot'];
 
     public function surah_recitations(): HasMany
     {
@@ -58,5 +61,17 @@ class Student extends Model
     public function confirmation_code(): MorphOne
     {
         return $this->morphOne(ConfirmationCode::class, 'confirmable');
+    }
+
+    public function scopeWithPointsSum(Builder $query, $mosque_id): void
+    {
+        $query->withSum(['points as points_sum' => function ($query) use ($mosque_id) {
+            $query->where('mosque_id', $mosque_id);
+        }], 'points')->orderByDesc('points_sum');
+    }
+
+    public function getPointsSum($mosque_id)
+    {
+        return $this->points()->where('mosque_id', $mosque_id)->sum('points');
     }
 }

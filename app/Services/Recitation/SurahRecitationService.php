@@ -20,7 +20,7 @@ class SurahRecitationService extends RecitationService
         ]);
     }
 
-    public function updateSurahRecitation(Student $student, int $id, int $surahId, $rate = null)
+    public function updateSurahRecitation(Student $student, int $id, int $surahId, $rate = null): array
     {
         return $this->updateRecitation($student, $id, [
             'surah_id' => $surahId,

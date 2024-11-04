@@ -29,7 +29,9 @@ class GroupController extends Controller
 
         $groups = $this->groupService->groups();
 
-        return response()->json($groups);
+        return response()->json([
+            $groups,
+        ]);
 
     }
 
@@ -44,6 +46,7 @@ class GroupController extends Controller
         }
         $group = Group::create([
             'mosque_id' => (Auth::user())->mosque->id,
+            'name' => $validated['name'],
             'user_id' => $validated['user_id'],
         ]);
 

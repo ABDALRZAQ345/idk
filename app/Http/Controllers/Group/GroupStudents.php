@@ -28,7 +28,9 @@ class GroupStudents extends Controller
     {
 
         $this->groupService->CheckCanAccessGroup($group);
-        $students = $group->students()->paginate(15);
+        $mosque_id = $group->mosque->id;
+        $students = $group->students()->WithPointsSum($mosque_id)->paginate(20)->toArray();
+        $students['students_count'] = $group->students->count();
 
         return response()->json([
             'students' => $students,
@@ -64,7 +66,7 @@ class GroupStudents extends Controller
     public function show(Group $group, Student $student): JsonResponse
     {
         $this->groupService->CheckCanAccessGroup($group);
-        $student = $group->students()->findOrFail($student->id);
+        $student = $group->students()->WithPointsSum($group->mosque->id)->findOrFail($student->id);
 
         return response()->json([
             'student' => $student,

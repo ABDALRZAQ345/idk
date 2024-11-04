@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\FORBIDDEN;
+use App\Http\Resources\StudentResource;
 use App\Models\Student;
 use App\Services\Student\StudentsService;
 use Illuminate\Http\JsonResponse;
@@ -20,7 +21,6 @@ class StudentController extends Controller
     //
     public function index(): JsonResponse
     {
-
         $students = $this->studentsService->getStudents();
 
         return response()->json([
@@ -35,9 +35,10 @@ class StudentController extends Controller
     {
 
         $this->studentsService->CheckCanAccessStudent($student);
+        $mosque_id = Auth::user()->mosque->id;
 
         return response()->json([
-            'student' => $student,
+            'student' => new StudentResource($student, $mosque_id),
         ]);
     }
 

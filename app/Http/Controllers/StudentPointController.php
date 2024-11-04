@@ -27,8 +27,8 @@ class StudentPointController extends Controller
     public function index(Student $student): JsonResponse
     {
         $this->studentPointService->CheckCanAccessStudentPoints($student);
-        $points = $student->points()->paginate(20)->toArray();
-        $totalPoints = $student->points()->sum('points');
+        $points = $student->points()->where('mosque_id', Auth::user()->mosque->id)->paginate(20)->toArray();
+        $totalPoints = $student->points()->where('mosque_id', Auth::user()->mosque->id)->sum('points');
         $points['total_points'] = $totalPoints;
 
         return response()->json([
@@ -44,8 +44,14 @@ class StudentPointController extends Controller
 
         $this->studentPointService->CheckCanEditStudentPoints($student);
         $validated = $request->validated();
+        $mosque_id = Auth::user()->mosque->id;
+        if ($validated['sign'] == -1 && $student->getPointsSum($mosque_id) - $validated['points'] < 0) {
+            return response()->json([
+                'message' => 'you cant delete more than student `s points',
+            ], 400);
+        }
         $points = $student->points()->create([
-            'mosque_id' => Auth::user()->mosque->id,
+            'mosque_id' => $mosque_id,
             'points' => $validated['sign'] * $validated['points'],
             'reason' => $validated['reason'],
         ]);
@@ -62,7 +68,7 @@ class StudentPointController extends Controller
     public function show(Student $student, Point $point): JsonResponse
     {
         $this->studentPointService->CheckCanAccessStudentPoints($student);
-        $point = $student->points()->findOrFail($point->id);
+        $point = $student->points()->where('mosque_id', Auth::user()->mosque->id)->findOrFail($point->id);
 
         return response()->json([
             'point' => $point,

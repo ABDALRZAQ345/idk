@@ -23,7 +23,7 @@ class StudentPointService
     {
         $this->studentsService->CheckCanAccessStudent($student);
         $user = Auth::user();
-        if (! $user->hasPermission('edit_students_points')) {
+        if (! $user->hasPermission('student_points.update')) {
             throw new FORBIDDEN('you can not access student points');
         }
 
@@ -36,7 +36,7 @@ class StudentPointService
     {
         $this->studentsService->CheckCanAccessStudent($student);
         $user = Auth::user();
-        if (! $user->hasPermission('show_students_points')) {
+        if (! $user->hasPermission('student_points.read')) {
             throw new FORBIDDEN('you can not access student points');
         }
     }

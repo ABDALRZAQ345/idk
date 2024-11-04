@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Group;
 
 use App\Rules\BelongsToSameMosque;
+use App\Rules\HasNoGroup;
 use Illuminate\Foundation\Http\FormRequest;
 
 class GroupRequest extends FormRequest
@@ -23,7 +24,8 @@ class GroupRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => ['required', 'integer', 'exists:users,id', new BelongsToSameMosque],
+            'user_id' => ['required', 'integer', 'exists:users,id', new HasNoGroup , new BelongsToSameMosque()],
+            'name' => ['required', 'string'],
         ];
     }
 }

@@ -28,9 +28,13 @@ class DatabaseSeeder extends Seeder
             $mosque->students()->createMany(
                 Student::factory(100)->make()->toArray()
             );
-            $users = User::factory(10)->create([
+            $users = User::factory(2)->create([
                 'mosque_id' => $mosque->id,
                 'role_id' => $mosque->roles->first()->id,
+            ]);
+            User::factory(2)->create([
+                'mosque_id' => $mosque->id,
+                'role_id' => $mosque->roles()->where('id', '!=', $mosque->roles->first()->id)->first()->id,
             ]);
 
             Sanctum::actingAs($users->first());

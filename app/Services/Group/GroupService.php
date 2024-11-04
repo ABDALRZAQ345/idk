@@ -96,16 +96,21 @@ class GroupService
     {
         $user = Auth::user();
         $mosque = $user->mosque;
-        if ($user->hasPermission('show_all_groups')) {
-            $groups = $mosque->groups;
+        if ($user->hasPermission('groups.read')) {
+            $groups = $mosque->groups()->withCount('students')->paginate(20);
+        } elseif ($user->group) {
+            $groups = $user->group()->withCount('students')->paginate(20);
         } else {
-            $groups = $user->group;
+            $groups = EmptyPagination();
         }
 
         return $groups;
 
     }
 
+    /**
+     * @throws FORBIDDEN
+     */
     public function CheckCanAccessGroup(Group $group): void
     {
         /// check that they are belongs to the same mosque

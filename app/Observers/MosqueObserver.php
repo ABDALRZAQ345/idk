@@ -4,7 +4,6 @@ namespace App\Observers;
 
 use App\Enums\RoleEnum;
 use App\Models\Mosque;
-use App\Models\Permission;
 
 class MosqueObserver
 {
@@ -16,10 +15,11 @@ class MosqueObserver
         // creating the rules for each new mosque
         $roles = RoleEnum::getAllRoles();
         foreach ($roles as $role) {
+            $role_name = $role;
             $role = $mosque->roles()->create(['name' => $role]);
-            $p = Permission::all();
+            $p = RoleEnum::getPermissions($role_name);
             foreach ($p as $permission) {
-                $role->assignPermission($permission->name);
+                $role->assignPermission($permission['name']);
             }
         }
         for ($i = 1; $i <= 30; $i++) {
