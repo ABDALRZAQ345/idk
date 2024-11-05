@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -14,6 +15,8 @@ class Mosque extends Model
     protected $guarded = ['id'];
 
     protected $fillable = ['name', 'location'];
+
+    protected $hidden = ['pivot'];
 
     public function users(): HasMany
     {
@@ -58,5 +61,10 @@ class Mosque extends Model
     public function surah_points(): HasMany
     {
         return $this->hasMany(SurahPoint::class);
+    }
+
+    public function activities(): HasMany
+    {
+        return $this->Hasmany(Activity::class);
     }
 }

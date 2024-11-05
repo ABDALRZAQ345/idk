@@ -16,9 +16,9 @@ class CheckAuthType
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next,$type)
+    public function handle(Request $request, Closure $next, $type)
     {
-        if(($type=='user' && Auth::user() instanceof User ) || ($type=='student' && Auth::user() instanceof Student)){
+        if (($type == 'user' && Auth::user() instanceof User) || ($type == 'student' && Auth::user() instanceof Student)) {
             return $next($request);
         }
 

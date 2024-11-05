@@ -18,7 +18,7 @@ return Application::configure(basePath: dirname(__DIR__))
         //
         $middleware->alias([
             'permission' => \App\Http\Middleware\RolesAndPermissions\Permission::class,
-            'auth.type' => \App\Http\Middleware\CheckAuthType::class
+            'auth.type' => \App\Http\Middleware\CheckAuthType::class,
         ]);
 
     })

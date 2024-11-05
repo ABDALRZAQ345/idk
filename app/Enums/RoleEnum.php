@@ -50,6 +50,7 @@ enum RoleEnum
                 'groups.read',
                 'student_points.read',
                 'group_students.read',
+                'activity.read'
             ])->select('name')->toArray();
         } else {
             return [];

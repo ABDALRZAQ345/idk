@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Notifications\Notifiable;
@@ -15,7 +17,7 @@ class User extends Authenticatable
 
     protected $guarded = ['id'];
 
-    public function group(): \Illuminate\Database\Eloquent\Relations\HasOne
+    public function group(): HasOne
     {
         return $this->hasOne(Group::class);
     }
@@ -43,5 +45,9 @@ class User extends Authenticatable
     public function permissions()
     {
         return $this->role->permissions();
+    }
+    public function activities(): HasMany
+    {
+          return  $this->Hasmany(Activity::class);
     }
 }

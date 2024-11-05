@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Point extends Model
 {
@@ -13,6 +14,7 @@ class Point extends Model
     protected $guarded = [
         'id',
     ];
+    protected $hidden=['recitation_type','recitation_id'];
 
     public function student(): BelongsTo
     {
@@ -24,7 +26,7 @@ class Point extends Model
         return $this->belongsTo(Mosque::class);
     }
 
-    public function recitation(): \Illuminate\Database\Eloquent\Relations\MorphTo
+    public function recitation(): MorphTo
     {
         return $this->morphTo();
     }

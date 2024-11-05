@@ -13,6 +13,8 @@ class Group extends Model
 
     protected $guarded = ['id'];
 
+    protected $hidden = ['pivot'];
+
     public function mosque(): BelongsTo
     {
         return $this->belongsTo(Mosque::class);

@@ -17,7 +17,7 @@ class Student extends Model
 
     protected $guarded = ['id'];
 
-    protected $hidden = ['pivot'];
+    protected $hidden = ['pivot','remember_token'];
 
     public function surah_recitations(): HasMany
     {
@@ -56,6 +56,12 @@ class Student extends Model
         return $this->belongsToMany(Group::class, 'mosque_student')
             ->wherePivot('mosque_id', $mosque)
             ->exists();
+    }
+
+    public function group($mosque_id)
+    {
+        return $this->belongsToMany(Group::class, 'mosque_student')
+            ->wherePivot('mosque_id', $mosque_id)->select(['groups.name', 'groups.id', 'groups.number'])->first();
     }
 
     public function confirmation_code(): MorphOne

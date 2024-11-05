@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Recitation;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Recitation\SectionRecitationRequest;
-use App\Models\Mosque;
 use App\Models\Student;
 use App\Services\Recitation\SectionRecitationService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 
 class SectionRecitationController extends Controller
 {
@@ -18,8 +18,9 @@ class SectionRecitationController extends Controller
         $this->sectionRecitationService = $sectionRecitationService;
     }
 
-    public function index(Mosque $mosque, Student $student): JsonResponse
+    public function index(Student $student): JsonResponse
     {
+        $mosque = Auth::user()->mosque;
         $section_recitation = $this->sectionRecitationService->getRecitations($student, $mosque);
 
         return response()->json([

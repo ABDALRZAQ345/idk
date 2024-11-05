@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\StudentAuthController;
 use App\Http\Controllers\Group\GroupController;
@@ -11,25 +12,27 @@ use App\Http\Controllers\Recitation\SectionRecitationController;
 use App\Http\Controllers\Recitation\SurahRecitationController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\StudentPointController;
+use App\Http\Controllers\StudentProfileController;
+use App\Http\Controllers\TimeController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['throttle:api'])->group(function () {
 
-    Route::group(['middleware' => ['auth:sanctum' , 'auth.type:user' ],], function () {
+    Route::group(['middleware' => ['auth:sanctum', 'auth.type:user']], function () {
 
         Route::group([], function () {
             Route::post('/students/{student}/page_recitations', [PageRecitationController::class, 'store'])->middleware('permission:recitation.store')->name('page_recitation.store');
-            Route::get('/mosques/{mosque}/students/{student}/page_recitations', [PageRecitationController::class, 'index'])->middleware('permission:recitation.read')->name('page_recitation.index');
+            Route::get('/students/{student}/page_recitations', [PageRecitationController::class, 'index'])->middleware('permission:recitation.read')->name('page_recitation.index');
             Route::delete('/students/{student}/page_recitations/{page_recitation}', [PageRecitationController::class, 'delete'])->middleware('permission:recitation.delete')->name('page_recitation.delete');
             Route::put('/students/{student}/page_recitations/{page_recitation}', [PageRecitationController::class, 'update'])->middleware('permission:recitation.update')->name('page_recitation.update');
 
             Route::post('/students/{student}/surah_recitations', [SurahRecitationController::class, 'store'])->middleware('permission:recitation.store')->name('surah_recitation.store');
-            Route::get('/mosques/{mosque}/students/{student}/surah_recitations', [SurahRecitationController::class, 'index'])->middleware('permission:recitation.read')->name('surah_recitation.index');
+            Route::get('/students/{student}/surah_recitations', [SurahRecitationController::class, 'index'])->middleware('permission:recitation.read')->name('surah_recitation.index');
             Route::delete('/students/{student}/surah_recitations/{surah_recitation}', [SurahRecitationController::class, 'delete'])->middleware('permission:recitation.delete')->name('surah_recitation.delete');
             Route::put('/students/{student}/surah_recitations/{surah_recitation}', [SurahRecitationController::class, 'update'])->middleware('permission:recitation.update')->name('surah_recitation.update');
 
             Route::post('/students/{student}/section_recitations', [SectionRecitationController::class, 'store'])->middleware('permission:recitation.store')->name('section_recitation.store');
-            Route::get('/mosques/{mosque}/students/{student}/section_recitations', [SectionRecitationController::class, 'index'])->middleware('permission:recitation.read')->name('section_recitation.index');
+            Route::get('/students/{student}/section_recitations', [SectionRecitationController::class, 'index'])->middleware('permission:recitation.read')->name('section_recitation.index');
             Route::delete('/students/{student}/section_recitations/{section_recitation}', [SectionRecitationController::class, 'delete'])->middleware('permission:recitation.delete')->name('section_recitation.delete');
             Route::put('/students/{student}/section_recitations/{section_recitation}', [SectionRecitationController::class, 'update'])->middleware('permission:recitation.update')->name('section_recitation.update');
 
@@ -67,8 +70,28 @@ Route::middleware(['throttle:api'])->group(function () {
             // Route::delete('/students/{student}/points/{point}', [StudentPointController::class, 'delete'])->middleware('permission:student_points.delete')->name('points.delete');
             // Route::put('/students/{student}/points/{point}', [StudentPointController::class, 'update'])->middleware('permission:student_points.update')->name('points.update');
         });
+        Route::group([],function (){
+
+           Route::get('/activities',[ActivityController::class, 'index'])->middleware('permission:activity.read')->name('activities.index');
+           Route::post('/activities',[ActivityController::class, 'store'])->middleware('permission:activity.store')->name('activities.store');
+           Route::get('/activities/{activity}',[ActivityController::class, 'show'])->middleware('permission:activity.read')->name('activities.show');
+           Route::post('/activities/{activity}/cancel',[ActivityController::class, 'cancel'])->middleware('permission:activity.cancel')->name('activities.delete');
+        });
 
     });
+
+    Route::group(['middleware' => ['auth:sanctum', 'auth.type:student']], function () {
+        Route::group(['prefix' => '/mosques/{mosque}'], function () {
+            Route::get('/me', [StudentProfileController::class, 'index']);
+            Route::get('/me/page_recitations', [StudentProfileController::class, 'pageRecitations']);
+            Route::get('/me/surah_recitations', [StudentProfileController::class, 'surahRecitations']);
+            Route::get('/me/section_recitations', [StudentProfileController::class, 'sectionRecitations']);
+            Route::get('/me/points', [StudentProfileController::class, 'points']);
+            Route::get('/me/activities', [StudentProfileController::class, 'activities']);
+        });
+
+    });
+
     Route::prefix('students')->group(function () {
         Route::post('/register', [StudentAuthController::class, 'register'])->middleware('throttle:api')->name('register');
 
@@ -84,5 +107,6 @@ Route::middleware(['throttle:api'])->group(function () {
             ->name('logout');
     });
 
+    Route::get('/time',[TimeController::class,'time']);
     Route::post('/s', [AuthController::class, 'register'])->name('auth.register');
 });

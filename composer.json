@@ -7,11 +7,11 @@
     "require": {
         "php": "^8.2",
         "laravel/framework": "^11.9",
-         "laravel/reverb": "*",
+        "laravel/reverb": "*",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
-        "spatie/laravel-searchable": "*",
-        "ext-http": "*"
+        "spatie/laravel-query-builder": "^6.2",
+        "spatie/laravel-searchable": "*"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.1",
