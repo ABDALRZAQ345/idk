@@ -45,7 +45,7 @@ Route::middleware(['throttle:api'])->group(function () {
     Route::name('student.')->prefix('/students')->group(function () {
 
         Route::name('register.')->prefix('/register')->group(function () {
-            Route::post('/phone-number', [StudentRegisterController::class, 'phone'])
+            Route::post('/phone', [StudentRegisterController::class, 'phone'])
                 ->name('phone');
 
             Route::post('/verification', VerificationCodeController::class)
@@ -56,7 +56,7 @@ Route::middleware(['throttle:api'])->group(function () {
         });
 
         Route::name('login.')->prefix('/login')->group(function () {
-            Route::post('/phone-number', [StudentLoginController::class, 'phone'])
+            Route::post('/phone', [StudentLoginController::class, 'phone'])
                 ->name('phone');
 
             Route::post('/verification', [StudentLoginController::class, 'verify'])
@@ -73,7 +73,7 @@ Route::middleware(['throttle:api'])->group(function () {
 
         Route::name('register.')->prefix('/register')->group(function () {
 
-            Route::post('/phone-number', [UserAuthController::class, 'phone'])
+            Route::post('/phone', [UserAuthController::class, 'phone'])
                 ->name('phone');
 
             Route::post('/verification', VerificationCodeController::class)
@@ -85,7 +85,7 @@ Route::middleware(['throttle:api'])->group(function () {
 
         Route::name('forgot.password')->prefix('/forgot-password')->group(function () {
 
-            Route::post('/phone-number', [UserForgotPasswordController::class, 'phone'])
+            Route::post('/phone', [UserForgotPasswordController::class, 'phone'])
                 ->name('phone');
 
             Route::post('/verification', VerificationCodeController::class)
