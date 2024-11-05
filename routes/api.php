@@ -42,14 +42,14 @@ Route::middleware(['throttle:api'])->group(function () {
 
     });
 
+    Route::post('/phone/verify', VerificationCodeController::class)
+        ->name('phone.verify');
+
     Route::name('student.')->prefix('/students')->group(function () {
 
         Route::name('register.')->prefix('/register')->group(function () {
             Route::post('/phone', [StudentRegisterController::class, 'phone'])
                 ->name('phone');
-
-            Route::post('/verification', VerificationCodeController::class)
-                ->name('verify');
 
             Route::post('/personal-info', [StudentRegisterController::class, 'register'])
                 ->name('register');
@@ -76,9 +76,6 @@ Route::middleware(['throttle:api'])->group(function () {
             Route::post('/phone', [UserAuthController::class, 'phone'])
                 ->name('phone');
 
-            Route::post('/verification', VerificationCodeController::class)
-                ->name('verify');
-
             Route::post('/personal-info', [UserAuthController::class, 'register'])
                 ->name('register');
         });
@@ -87,9 +84,6 @@ Route::middleware(['throttle:api'])->group(function () {
 
             Route::post('/phone', [UserForgotPasswordController::class, 'phone'])
                 ->name('phone');
-
-            Route::post('/verification', VerificationCodeController::class)
-                ->name('verify');
 
             Route::post('/change', [UserForgotPasswordController::class, 'change'])
                 ->name('change');
