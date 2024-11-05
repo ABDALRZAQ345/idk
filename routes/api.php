@@ -1,8 +1,8 @@
 <?php
 
+
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\Auth\StudentAuthController;
 use App\Http\Controllers\Group\GroupController;
 use App\Http\Controllers\Group\GroupStudents;
 use App\Http\Controllers\PermissionController;
@@ -14,11 +14,22 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\StudentPointController;
 use App\Http\Controllers\StudentProfileController;
 use App\Http\Controllers\TimeController;
+
+use App\Http\Controllers\Auth\StudentLoginController;
+use App\Http\Controllers\Auth\StudentRegisterController;
+
+
+use App\Http\Controllers\Auth\UserAuthController;
+use App\Http\Controllers\UserForgotPasswordController;
+use App\Http\Controllers\VerificationCodeController;
+
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['throttle:api'])->group(function () {
 
+
     Route::group(['middleware' => ['auth:sanctum', 'auth.type:user']], function () {
+
 
         Route::group([], function () {
             Route::post('/students/{student}/page_recitations', [PageRecitationController::class, 'store'])->middleware('permission:recitation.store')->name('page_recitation.store');
@@ -26,17 +37,22 @@ Route::middleware(['throttle:api'])->group(function () {
             Route::delete('/students/{student}/page_recitations/{page_recitation}', [PageRecitationController::class, 'delete'])->middleware('permission:recitation.delete')->name('page_recitation.delete');
             Route::put('/students/{student}/page_recitations/{page_recitation}', [PageRecitationController::class, 'update'])->middleware('permission:recitation.update')->name('page_recitation.update');
 
+
             Route::post('/students/{student}/surah_recitations', [SurahRecitationController::class, 'store'])->middleware('permission:recitation.store')->name('surah_recitation.store');
             Route::get('/students/{student}/surah_recitations', [SurahRecitationController::class, 'index'])->middleware('permission:recitation.read')->name('surah_recitation.index');
             Route::delete('/students/{student}/surah_recitations/{surah_recitation}', [SurahRecitationController::class, 'delete'])->middleware('permission:recitation.delete')->name('surah_recitation.delete');
             Route::put('/students/{student}/surah_recitations/{surah_recitation}', [SurahRecitationController::class, 'update'])->middleware('permission:recitation.update')->name('surah_recitation.update');
+
 
             Route::post('/students/{student}/section_recitations', [SectionRecitationController::class, 'store'])->middleware('permission:recitation.store')->name('section_recitation.store');
             Route::get('/students/{student}/section_recitations', [SectionRecitationController::class, 'index'])->middleware('permission:recitation.read')->name('section_recitation.index');
             Route::delete('/students/{student}/section_recitations/{section_recitation}', [SectionRecitationController::class, 'delete'])->middleware('permission:recitation.delete')->name('section_recitation.delete');
             Route::put('/students/{student}/section_recitations/{section_recitation}', [SectionRecitationController::class, 'update'])->middleware('permission:recitation.update')->name('section_recitation.update');
 
+
         });
+
+
 
         Route::group([], function () {
             ////
@@ -51,6 +67,7 @@ Route::middleware(['throttle:api'])->group(function () {
             Route::delete('/groups/{group}/students/{student}', [GroupStudents::class, 'delete'])->middleware('permission:group_students.delete')->name('group.students.delete');
             Route::put('/groups/{group}/students/{student}', [GroupStudents::class, 'update'])->middleware('permission:group_students.update')->name('group.students.update');
 
+
         });
         Route::group([], function () {
             Route::get('/students', [StudentController::class, 'index'])->middleware('permission:students.read')->name('student.index');
@@ -59,6 +76,8 @@ Route::middleware(['throttle:api'])->group(function () {
         });
 
         Route::get('/permissions', [PermissionController::class, 'index'])->name('permissions.index');
+
+
 
         Route::group([], function () {
             Route::get('/points', [PointController::class, 'index'])->middleware('permission:points.read')->name('points_details.index');
@@ -70,15 +89,16 @@ Route::middleware(['throttle:api'])->group(function () {
             // Route::delete('/students/{student}/points/{point}', [StudentPointController::class, 'delete'])->middleware('permission:student_points.delete')->name('points.delete');
             // Route::put('/students/{student}/points/{point}', [StudentPointController::class, 'update'])->middleware('permission:student_points.update')->name('points.update');
         });
-        Route::group([],function (){
+        Route::group([], function () {
 
-           Route::get('/activities',[ActivityController::class, 'index'])->middleware('permission:activity.read')->name('activities.index');
-           Route::post('/activities',[ActivityController::class, 'store'])->middleware('permission:activity.store')->name('activities.store');
-           Route::get('/activities/{activity}',[ActivityController::class, 'show'])->middleware('permission:activity.read')->name('activities.show');
-           Route::post('/activities/{activity}/cancel',[ActivityController::class, 'cancel'])->middleware('permission:activity.cancel')->name('activities.delete');
+            Route::get('/activities', [ActivityController::class, 'index'])->middleware('permission:activity.read')->name('activities.index');
+            Route::post('/activities', [ActivityController::class, 'store'])->middleware('permission:activity.store')->name('activities.store');
+            Route::get('/activities/{activity}', [ActivityController::class, 'show'])->middleware('permission:activity.read')->name('activities.show');
+            Route::post('/activities/{activity}/cancel', [ActivityController::class, 'cancel'])->middleware('permission:activity.cancel')->name('activities.delete');
         });
 
     });
+
 
     Route::group(['middleware' => ['auth:sanctum', 'auth.type:student']], function () {
         Route::group(['prefix' => '/mosques/{mosque}'], function () {
@@ -92,21 +112,63 @@ Route::middleware(['throttle:api'])->group(function () {
 
     });
 
-    Route::prefix('students')->group(function () {
-        Route::post('/register', [StudentAuthController::class, 'register'])->middleware('throttle:api')->name('register');
+    Route::post('/phone/verify', VerificationCodeController::class)
+        ->name('phone.verify');
 
-        Route::post('/login', [StudentAuthController::class, 'login'])
-            ->name('login');
+    Route::name('student.')->prefix('/students')->group(function () {
 
-        Route::post('/send-confirmation-code', [StudentAuthController::class, 'sendConfirmationCode'])
-            ->middleware('throttle:send_confirmation_code')
-            ->name('send.confirmation.code');
+        Route::name('register.')->prefix('/register')->group(function () {
+            Route::post('/phone', [StudentRegisterController::class, 'phone'])
+                ->name('phone');
 
-        Route::post('/logout', [StudentAuthController::class, 'logout'])
+            Route::post('/personal-info', [StudentRegisterController::class, 'register'])
+                ->name('register');
+        });
+
+        Route::name('login.')->prefix('/login')->group(function () {
+            Route::post('/phone', [StudentLoginController::class, 'phone'])
+                ->name('phone');
+
+            Route::post('/verification', [StudentLoginController::class, 'verify'])
+                ->name('verify');
+
+        });
+
+        Route::post('/logout', [StudentLoginController::class, 'logout'])
             ->middleware('auth:sanctum')
             ->name('logout');
     });
 
-    Route::get('/time',[TimeController::class,'time']);
-    Route::post('/s', [AuthController::class, 'register'])->name('auth.register');
+    Route::name('user.')->prefix('/users')->group(function () {
+
+        Route::name('register.')->prefix('/register')->group(function () {
+
+            Route::post('/phone', [UserAuthController::class, 'phone'])
+                ->name('phone');
+
+            Route::post('/personal-info', [UserAuthController::class, 'register'])
+                ->name('register');
+        });
+
+        Route::name('forgot.password')->prefix('/forgot-password')->group(function () {
+
+            Route::post('/phone', [UserForgotPasswordController::class, 'phone'])
+                ->name('phone');
+
+            Route::post('/change', [UserForgotPasswordController::class, 'change'])
+                ->name('change');
+        });
+
+        Route::post('/login', [UserAuthController::class, 'login'])
+            ->name('login');
+
+        Route::post('/logout', [UserAuthController::class, 'logout'])
+            ->middleware('auth:sanctum')
+            ->name('logout');
+
+    });
+        Route::get('/time',[TimeController::class,'time']);
+        Route::post('/s', [AuthController::class, 'register'])->name('auth.register');
 });
+
+

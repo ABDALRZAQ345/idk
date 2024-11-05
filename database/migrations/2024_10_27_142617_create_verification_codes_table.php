@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('confirmation_codes', function (Blueprint $table) {
+        Schema::create('verification_codes', function (Blueprint $table) {
             $table->id();
-            $table->morphs('confirmable');
-            $table->char('code', 6)->unique();
+            $table->string('phone_number')->unique();
+            $table->string('code');
             $table->timestamp('expires_at');
             $table->timestamps();
         });
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('confirmation_codes');
+        Schema::dropIfExists('verification_codes');
     }
 };

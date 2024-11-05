@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Students;
+namespace App\Http\Requests\Users;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Password;
 
-class StudentLoginRequest extends FormRequest
+class UserForgotPasswordRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -18,10 +19,11 @@ class StudentLoginRequest extends FormRequest
                 'required',
                 'numeric',
                 'digits:10',
+                'exists:users,phone_number',
                 'exists:verification_codes,phone_number',
-                'exists:students,phone_number'
             ],
             'code' => ['required', 'numeric', 'digits:6'],
+            'password' => ['required', 'confirmed', Password::defaults()],
         ];
     }
 }

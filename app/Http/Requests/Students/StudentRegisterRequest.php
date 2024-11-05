@@ -17,6 +17,7 @@ class StudentRegisterRequest extends FormRequest
             'name' => ['required', 'string', 'max:50'],
             'birth_date' => ['required', 'date', 'before_or_equal:'.now()->subYears(5)],
             'phone_number' => ['required', 'numeric', 'digits:10', 'unique:students,phone_number'],
+            'code' => ['required', 'numeric', 'digits:6'],
         ];
     }
 }

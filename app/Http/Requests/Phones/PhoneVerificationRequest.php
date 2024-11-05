@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Students;
+namespace App\Http\Requests\Phones;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StudentSendConfirmationCodeRequest extends FormRequest
+class PhoneVerificationRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -14,7 +14,9 @@ class StudentSendConfirmationCodeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'phone_number' => ['required', 'numeric', 'digits:10', 'exists:students,phone_number'],
+            'phone_number' => ['required', 'numeric', 'digits:10', 'exists:verification_codes,phone_number'],
+            'code' => ['required', 'numeric', 'digits:6'],
         ];
     }
+
 }

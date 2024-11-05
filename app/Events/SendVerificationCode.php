@@ -1,22 +1,24 @@
 <?php
 
-namespace App\Events\Students;
+namespace App\Events;
 
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class StudentRegistered
+class SendVerificationCode
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
+
+    public $phone_number;
 
     /**
      * Create a new event instance.
      */
-    public function __construct($student)
+    public function __construct($phoneNumber)
     {
-        $this->student = $student;
+        $this->phone_number = $phoneNumber;
     }
 
     /**

@@ -23,6 +23,11 @@ class Mosque extends Model
         return $this->hasMany(User::class);
     }
 
+    public function unregistered_users(): HasMany
+    {
+        return $this->hasMany(UnregisteredUser::class);
+    }
+
     public function students(): BelongsToMany
     {
         return $this->belongsToMany(Student::class, 'mosque_student');
