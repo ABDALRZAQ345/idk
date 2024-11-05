@@ -19,7 +19,7 @@ class StudentLoginRequest extends FormRequest
                 'numeric',
                 'digits:10',
                 'exists:verification_codes,phone_number',
-                'exists:students,phone_number'
+                'exists:students,phone_number',
             ],
             'code' => ['required', 'numeric', 'digits:6'],
         ];

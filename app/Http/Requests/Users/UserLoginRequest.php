@@ -33,7 +33,7 @@ class UserLoginRequest extends FormRequest
     {
         $user = User::where('phone_number', $this->phone_number)->first();
 
-        if (!Hash::check($this->password, $user->password)) {
+        if (! Hash::check($this->password, $user->password)) {
             RateLimiter::hit($this->ip());
 
             throw new BadCredentialsException;
@@ -41,5 +41,4 @@ class UserLoginRequest extends FormRequest
 
         return $user;
     }
-
 }

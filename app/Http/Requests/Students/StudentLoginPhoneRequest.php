@@ -29,8 +29,8 @@ class StudentLoginPhoneRequest extends FormRequest
     {
         $ip = $this->ip();
 
-        $dailyKey = $ip . '|daily';
-        $thirtyMinutesKey = $ip . '|thirty_minutes';
+        $dailyKey = $ip.'|daily';
+        $thirtyMinutesKey = $ip.'|thirty_minutes';
 
         // Check for daily limit
         if (RateLimiter::tooManyAttempts($dailyKey, 5)) {
@@ -45,7 +45,7 @@ class StudentLoginPhoneRequest extends FormRequest
             $minutes = ceil($seconds / 60);
 
             throw new TooManyRequestsException(
-                'Too many requests. Try again in ' . $minutes . ' minute(s).'
+                'Too many requests. Try again in '.$minutes.' minute(s).'
             );
         }
 

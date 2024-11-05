@@ -14,7 +14,6 @@ class VerificationCodeException extends Exception
         parent::__construct($message);
     }
 
-
     /**
      * Render the exception as an HTTP response.
      */
@@ -24,5 +23,4 @@ class VerificationCodeException extends Exception
             'message' => $this->getMessage(),
         ], Response::HTTP_UNAUTHORIZED);
     }
-
 }

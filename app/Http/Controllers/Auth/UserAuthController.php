@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 
 class UserAuthController extends Controller
 {
-
     private UserAuthService $userAuthService;
 
     public function __construct(UserAuthService $userAuthService)

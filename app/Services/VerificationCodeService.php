@@ -9,10 +9,9 @@ use Illuminate\Support\Facades\Hash;
 
 class VerificationCodeService
 {
-
     /**
      * Send verification code
-     * @param string $phoneNumber
+     *
      * @return void
      */
     public function send(string $phoneNumber)
@@ -22,10 +21,10 @@ class VerificationCodeService
 
     /**
      * Check if code belongs to phone number and not expired
-     * @param string $phoneNumber
-     * @param string $code
-     * @throws \App\Exceptions\VerificationCodeException
+     *
      * @return void
+     *
+     * @throws \App\Exceptions\VerificationCodeException
      */
     public function verify(string $phoneNumber, string $code)
     {
@@ -34,7 +33,7 @@ class VerificationCodeService
             $phoneNumber
         )->first();
 
-        if (!$verificationCode || !Hash::check($code, $verificationCode->code)) {
+        if (! $verificationCode || ! Hash::check($code, $verificationCode->code)) {
             throw new VerificationCodeException;
         }
 
@@ -45,9 +44,10 @@ class VerificationCodeService
 
     /**
      * Delete the verification code
-     * @param string $phoneNumber
-     * @throws \App\Exceptions\VerificationCodeException
+     *
      * @return void
+     *
+     * @throws \App\Exceptions\VerificationCodeException
      */
     public function delete(string $phoneNumber)
     {
@@ -56,7 +56,7 @@ class VerificationCodeService
             $phoneNumber
         )->first();
 
-        if (!$verificationCode) {
+        if (! $verificationCode) {
             throw new VerificationCodeException('Invalid phone number');
         }
 

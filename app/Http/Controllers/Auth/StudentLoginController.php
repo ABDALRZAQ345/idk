@@ -10,7 +10,6 @@ use Illuminate\Http\Request;
 
 class StudentLoginController extends Controller
 {
-
     private StudentAuthService $studentAuthService;
 
     public function __construct(StudentAuthService $studentAuthService)

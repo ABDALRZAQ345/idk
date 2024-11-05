@@ -46,8 +46,9 @@ class User extends Authenticatable
     {
         return $this->role->permissions();
     }
+
     public function activities(): HasMany
     {
-          return  $this->Hasmany(Activity::class);
+        return $this->hasmany(Activity::class);
     }
 }

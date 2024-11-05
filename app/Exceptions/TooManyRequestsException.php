@@ -9,7 +9,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class TooManyRequestsException extends Exception
 {
-
     public function __construct(string $message = 'Too many requests')
     {
         parent::__construct($message);

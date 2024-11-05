@@ -42,7 +42,7 @@ class UserStoreRequest extends FormRequest
                     )->exists();
 
                     if ($existsInUsers || $existsInUnregisteredUser) {
-                        $fail('The ' . $attribute . ' already exists');
+                        $fail('The '.$attribute.' already exists');
                     }
                 },
             ],

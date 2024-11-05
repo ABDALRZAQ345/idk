@@ -7,7 +7,6 @@ use App\Models\Mosque;
 use App\Services\Recitation\PageRecitationService;
 use App\Services\Recitation\SectionRecitationService;
 use App\Services\Recitation\SurahRecitationService;
-use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\Auth;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -80,7 +79,7 @@ class StudentProfileController extends Controller
     {
 
         $student = Auth::user();
-        $mosque=$student->mosques()->FindOrFail($mosque->id);
+        $mosque = $student->mosques()->FindOrFail($mosque->id);
         $points = $student->points()->where('mosque_id', $mosque->id)->paginate(20)->toArray();
         $totalPoints = $student->points()->where('mosque_id', $mosque->id)->sum('points');
         $points['total_points'] = $totalPoints;
@@ -93,12 +92,13 @@ class StudentProfileController extends Controller
     public function activities(Mosque $mosque): \Illuminate\Http\JsonResponse
     {
         $student = Auth::user();
-        $mosque=$student->mosques()->FindOrFail($mosque->id);
+        $mosque = $student->mosques()->FindOrFail($mosque->id);
         $activities = QueryBuilder::for(Activity::class)
             ->allowedFilters(['finished'])
             ->where('mosque_id', $mosque->id)
             ->orderBy('start_date')
             ->paginate(20);
+
         return response()->json([
             $activities,
         ]);

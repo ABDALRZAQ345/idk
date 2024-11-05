@@ -15,7 +15,6 @@ class StudentAuthService
 
     /**
      * Inject Dependencies
-     * @param \App\Services\VerificationCodeService $verificationCodeService
      */
     public function __construct(VerificationCodeService $verificationCodeService)
     {
@@ -24,7 +23,7 @@ class StudentAuthService
 
     /**
      * Send a verification code to the phone number
-     * @param string $phoneNumber
+     *
      * @return mixed|\Illuminate\Http\JsonResponse
      */
     public function phone(string $phoneNumber)
@@ -38,7 +37,7 @@ class StudentAuthService
 
     /**
      * Verify phone number and code then register the student
-     * @param \App\Http\Requests\Students\StudentRegisterRequest $request
+     *
      * @return mixed|\Illuminate\Http\JsonResponse
      */
     public function register(StudentRegisterRequest $request)
@@ -69,7 +68,7 @@ class StudentAuthService
 
     /**
      * Verify phone number and code then login the student
-     * @param \App\Http\Requests\Students\StudentLoginRequest $request
+     *
      * @return mixed|\Illuminate\Http\JsonResponse
      */
     public function login(StudentLoginRequest $request)
@@ -93,13 +92,13 @@ class StudentAuthService
             'message' => 'Student logged in successfully',
             'student_id' => $student->id,
             'access_token' => $token,
-            'token_type' => "Bearer",
+            'token_type' => 'Bearer',
         ]);
     }
 
     /**
      * Delete current access token
-     * @param \App\Models\Student $student
+     *
      * @return mixed|\Illuminate\Http\JsonResponse
      */
     public function logout(Student $student)

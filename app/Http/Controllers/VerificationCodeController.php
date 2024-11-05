@@ -7,7 +7,6 @@ use App\Services\VerificationCodeService;
 
 class VerificationCodeController extends Controller
 {
-
     private VerificationCodeService $verificationCodeService;
 
     public function __construct(VerificationCodeService $verificationCodeService)

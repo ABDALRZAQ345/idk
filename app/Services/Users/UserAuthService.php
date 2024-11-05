@@ -18,7 +18,6 @@ class UserAuthService
 
     /**
      * Inject Dependencies
-     * @param \App\Services\VerificationCodeService $verificationCodeService
      */
     public function __construct(VerificationCodeService $verificationCodeService)
     {
@@ -27,7 +26,7 @@ class UserAuthService
 
     /**
      * Send a verification code
-     * @param string $phoneNumber
+     *
      * @return mixed|\Illuminate\Http\JsonResponse
      */
     public function phone(string $phoneNumber)
@@ -43,7 +42,7 @@ class UserAuthService
      * Verify phone number and code then
      * register user with same id in unregistered users table then
      * delete unregistered user and verification code
-     * @param \App\Http\Requests\Users\UserRegisterRequest $request
+     *
      * @return mixed|\Illuminate\Http\JsonResponse
      */
     public function register(UserRegisterRequest $request)
@@ -84,9 +83,10 @@ class UserAuthService
 
     /**
      * Check password match then authenticate user
-     * @param \App\Http\Requests\Users\UserLoginRequest $request
-     * @throws \App\Exceptions\BadCredentialsException
+     *
      * @return mixed|\Illuminate\Http\JsonResponse
+     *
+     * @throws \App\Exceptions\BadCredentialsException
      */
     public function login(UserLoginRequest $request)
     {
@@ -97,7 +97,7 @@ class UserAuthService
             $validated['phone_number']
         )->firstOrFail();
 
-        if (!Hash::check($validated['password'], $user->password)) {
+        if (! Hash::check($validated['password'], $user->password)) {
             throw new BadCredentialsException;
         }
 
@@ -109,7 +109,7 @@ class UserAuthService
             'message' => 'User logged in successfully',
             'user_id' => $user->id,
             'access_token' => $token,
-            'token_type' => "Bearer",
+            'token_type' => 'Bearer',
         ]);
     }
 
@@ -139,7 +139,7 @@ class UserAuthService
 
     /**
      * Delete current access token
-     * @param \App\Models\User $user
+     *
      * @return mixed|\Illuminate\Http\JsonResponse
      */
     public function logout(User $user)
@@ -150,5 +150,4 @@ class UserAuthService
             'message' => 'User logged out successfully',
         ]);
     }
-
 }

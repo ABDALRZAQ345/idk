@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -70,6 +69,6 @@ class Mosque extends Model
 
     public function activities(): HasMany
     {
-        return $this->Hasmany(Activity::class);
+        return $this->hasmany(Activity::class);
     }
 }

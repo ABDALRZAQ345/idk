@@ -7,5 +7,5 @@ Schedule::call(function () {
 })->monthly();
 
 Schedule::call(function () {
-   dispatch(new \App\Jobs\FinishActivities());
+    dispatch(new \App\Jobs\FinishActivities);
 })->hourly();

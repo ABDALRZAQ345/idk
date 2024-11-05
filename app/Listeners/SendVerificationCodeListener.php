@@ -4,10 +4,7 @@ namespace App\Listeners;
 
 use App\Events\SendVerificationCode;
 use App\Models\VerificationCode;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Hash;
-
 
 class SendVerificationCodeListener
 {

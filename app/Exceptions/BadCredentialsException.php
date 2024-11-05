@@ -9,11 +9,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class BadCredentialsException extends Exception
 {
-
     public function __construct(string $message = 'Bad credentials')
     {
         parent::__construct($message);
     }
+
     /**
      * Render the exception as an HTTP response.
      */

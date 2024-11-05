@@ -14,7 +14,8 @@ class Point extends Model
     protected $guarded = [
         'id',
     ];
-    protected $hidden=['recitation_type','recitation_id'];
+
+    protected $hidden = ['recitation_type', 'recitation_id'];
 
     public function student(): BelongsTo
     {

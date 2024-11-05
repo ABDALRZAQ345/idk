@@ -4,13 +4,12 @@ namespace App\Services\Users;
 
 use App\Http\Requests\Users\UserStoreRequest;
 use App\Models\Role;
-use App\Models\User;
 use App\Models\UnregisteredUser;
+use App\Models\User;
 use Symfony\Component\HttpFoundation\Response;
 
 class UserService
 {
-
     public function store(UserStoreRequest $request)
     {
         $request->authenticate();
@@ -36,7 +35,7 @@ class UserService
 
         $unregisteredUserDeleted = UnregisteredUser::find($id)?->delete();
 
-        if (!$userDeleted && !$unregisteredUserDeleted) {
+        if (! $userDeleted && ! $unregisteredUserDeleted) {
             return response()->json([
                 'message' => 'User not found or could not be deleted',
             ], Response::HTTP_BAD_REQUEST);

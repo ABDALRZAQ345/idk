@@ -1,17 +1,13 @@
 <?php
 
-
 use App\Http\Controllers\UserController;
-
 use Illuminate\Support\Facades\Route;
 
 Route::get('/csrf-token', function () {
     return response()->json([
-        'csrfToken' => csrf_token()
+        'csrfToken' => csrf_token(),
     ]);
 });
-
-
 
 Route::name('user.')->prefix('/users')->group(function () {
 
@@ -28,4 +24,3 @@ Route::name('user.')->prefix('/users')->group(function () {
 
     });
 });
-

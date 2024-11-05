@@ -18,5 +18,4 @@ class PhoneVerificationRequest extends FormRequest
             'code' => ['required', 'numeric', 'digits:6'],
         ];
     }
-
 }

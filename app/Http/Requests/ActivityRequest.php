@@ -22,10 +22,10 @@ class ActivityRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'start_date' => ['required', 'date','date_format:Y-m-d H:i:s','after_or_equal:today'],
-            'duration' => ['required','integer'],
-            'name' => ['required', 'string','max:25'],
-            'description' => ['required', 'string','max:300'],
+            'start_date' => ['required', 'date', 'date_format:Y-m-d H:i:s', 'after_or_equal:today'],
+            'duration' => ['required', 'integer'],
+            'name' => ['required', 'string', 'max:25'],
+            'description' => ['required', 'string', 'max:300'],
         ];
     }
 }

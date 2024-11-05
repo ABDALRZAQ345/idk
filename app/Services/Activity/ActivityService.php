@@ -2,9 +2,4 @@
 
 namespace App\Services\Activity;
 
-
-
-class ActivityService
-{
-
-}
+class ActivityService {}

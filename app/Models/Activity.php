@@ -9,12 +9,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Activity extends Model
 {
     use HasFactory;
-    protected $guarded=['id'];
+
+    protected $guarded = ['id'];
 
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
+
     public function mosque(): BelongsTo
     {
         return $this->belongsTo(Mosque::class);
