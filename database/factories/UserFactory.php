@@ -25,7 +25,7 @@ class UserFactory extends Factory
     {
         return [
             'name' => fake()->name(),
-            'phone_number' => rand(1, 1e10),
+            'phone_number' => rand(1000000000, 9999999999),
             'mosque_id' => Mosque::factory()->create()->id,
             'password' => Hash::make('password'),
         ];
