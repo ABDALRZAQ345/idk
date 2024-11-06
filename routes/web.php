@@ -1,7 +1,6 @@
 <?php
 
-use App\Http\Controllers\UserController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UnregisteredUserController;
 
 Route::get('/csrf-token', function () {
     return response()->json([
@@ -9,18 +8,24 @@ Route::get('/csrf-token', function () {
     ]);
 });
 
-Route::name('user.')->prefix('/users')->group(function () {
+Route::middleware('auth:sanctum')->group(function () {
 
-    Route::middleware('auth:sanctum')->group(function () {
+    Route::name('admin.')->prefix('/admin')->group(function () {
 
-        Route::name('admin.')->prefix('/admin')->group(function () {
+        Route::name('user.')->prefix('/users')->group(function () {
+            
+            Route::name('register.')->prefix('/register')->group(function () {
 
-            Route::post('/', [UserController::class, 'store'])
-                ->name('store');
+                Route::post('/phone', [UnregisteredUserController::class, 'phone'])
+                    ->name('phone');
 
-            Route::delete('/{id}', [UserController::class, 'destroy'])
+                Route::post('/', [UnregisteredUserController::class, 'store'])
+                    ->name('store');
+            });
+
+            Route::delete('/{id}', [UnregisteredUserController::class, 'destroy'])
                 ->name('destroy');
         });
-
     });
+
 });

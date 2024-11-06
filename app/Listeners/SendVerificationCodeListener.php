@@ -5,6 +5,7 @@ namespace App\Listeners;
 use App\Events\SendVerificationCode;
 use App\Models\VerificationCode;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class SendVerificationCodeListener
 {
@@ -35,6 +36,6 @@ class SendVerificationCodeListener
             'expires_at' => now()->addMinutes(30),
         ]);
 
-        //Log::channel('verification_code')->info($code);
+        Log::channel('verification_code')->info($code);
     }
 }
