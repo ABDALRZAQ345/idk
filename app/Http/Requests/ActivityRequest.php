@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\GroupBelongsToSameMosque;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ActivityRequest extends FormRequest
@@ -22,6 +23,8 @@ class ActivityRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'groups' => ['required', 'array'],
+            'groups.*' => ['integer', 'exists:groups,id', new GroupBelongsToSameMosque],
             'start_date' => ['required', 'date', 'date_format:Y-m-d H:i:s', 'after_or_equal:today'],
             'duration' => ['required', 'integer'],
             'name' => ['required', 'string', 'max:25'],

@@ -69,6 +69,6 @@ class Mosque extends Model
 
     public function activities(): HasMany
     {
-        return $this->hasmany(Activity::class);
+        return $this->hasMany(Activity::class);
     }
 }

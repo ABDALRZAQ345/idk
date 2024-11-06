@@ -16,9 +16,6 @@ class GroupObserver
         $mex = getMex($numbers);
         $group->number = $mex;
     }
-    /**
-     *  Handle the Group created
-     */
 
     /**
      * Handle the Group "updated" event.

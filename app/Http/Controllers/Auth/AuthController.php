@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\Student;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
@@ -17,7 +18,7 @@ class AuthController extends Controller
             'id' => ['required', 'integer', 'min:1'],
         ]);
 
-        $user = Student::find($validated['id']);
+        $user = User::find($validated['id']);
 
         return response()->json([
             'data' => $user,

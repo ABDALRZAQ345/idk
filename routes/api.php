@@ -76,9 +76,9 @@ Route::middleware(['throttle:api'])->group(function () {
         });
         Route::group([], function () {
 
-            Route::get('/activities', [ActivityController::class, 'index'])->middleware('permission:activity.read')->name('activities.index');
             Route::post('/activities', [ActivityController::class, 'store'])->middleware('permission:activity.store')->name('activities.store');
-            Route::get('/activities/{activity}', [ActivityController::class, 'show'])->middleware('permission:activity.read')->name('activities.show');
+            Route::get('/activities', [ActivityController::class, 'index'])->name('activities.index');
+            Route::get('/activities/{activity}', [ActivityController::class, 'show'])->name('activities.show');
             Route::post('/activities/{activity}/cancel', [ActivityController::class, 'cancel'])->middleware('permission:activity.cancel')->name('activities.delete');
         });
 

@@ -89,13 +89,19 @@ class StudentProfileController extends Controller
         ]);
     }
 
-    public function activities(Mosque $mosque): \Illuminate\Http\JsonResponse
+    public function activities(Mosque $mosque)
     {
         $student = Auth::user();
         $mosque = $student->mosques()->FindOrFail($mosque->id);
+
+        $group= $student->group($mosque->id);
+
         $activities = QueryBuilder::for(Activity::class)
             ->allowedFilters(['finished'])
             ->where('mosque_id', $mosque->id)
+            ->whereRelation('groups', function ($query) use ($group) {
+                $query->where('group_id', $group->id);
+            })
             ->orderBy('start_date')
             ->paginate(20);
 
