@@ -40,4 +40,10 @@ VALUES ('recitation.store'),
        ('group_students.read'),
        ('group_students.update'),
        ('group_students.delete'),
-       ('group_students.store')
+       ('group_students.store'),
+       ('mosque.task.read'),
+       ('group.task.read'),
+       ('student.task.read'),
+       ('task.store'),
+       ('task.update'),
+       ('task.delete')

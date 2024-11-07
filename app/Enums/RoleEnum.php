@@ -40,6 +40,7 @@ enum RoleEnum
                 'supervisor.read',
                 'points.delete',
                 'points.update',
+                'mosque.task.read',
             ])->select('name')->toArray();
         } elseif ($role == self::Receiver) {
             return Permission::all()->whereIn('name', [
@@ -51,6 +52,8 @@ enum RoleEnum
                 'student_points.read',
                 'group_students.read',
                 'activity.read',
+                'group.task.read',
+                'student.task.read',
             ])->select('name')->toArray();
         } else {
             return [];

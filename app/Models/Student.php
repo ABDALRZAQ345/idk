@@ -30,6 +30,11 @@ class Student extends Model
         return $this->hasMany(PageRecitation::class);
     }
 
+    public function tasks(): BelongsToMany
+    {
+        return $this->belongsToMany(Task::class);
+    }
+
     public function points(): HasMany
     {
         return $this->hasMany(Point::class);

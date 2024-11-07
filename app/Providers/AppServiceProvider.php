@@ -18,7 +18,9 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Register any application services.
      */
-    public function register(): void {}
+    public function register(): void
+    {
+    }
 
     /**
      * Bootstrap any application services.
@@ -27,12 +29,12 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->observers();
         $this->rateLimiters();
-        Model::shouldBeStrict(! app()->environment('production'));
+        Model::shouldBeStrict(!app()->environment('production'));
         ///
 
-        Model::preventLazyLoading(! app()->environment('production'));
+        Model::preventLazyLoading(!app()->environment('production'));
 
-        Model::preventLazyLoading(! app()->environment('production'));
+        Model::preventLazyLoading(!app()->environment('production'));
         RateLimiter::for('api', function (Request $request) {
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });
@@ -58,13 +60,6 @@ class AppServiceProvider extends ServiceProvider
 
         RateLimiter::for('api', function (Request $request) {
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
-        });
-
-        RateLimiter::for('send_confirmation_code', function (Request $request) {
-            return [
-                Limit::perMinutes(30, 1)->by($request->ip()), // Limit to 1 request every 30 minutes
-                Limit::perDay(5)->by($request->ip()),         // Limit to 5 requests per day
-            ];
         });
     }
 }

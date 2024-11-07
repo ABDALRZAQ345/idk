@@ -18,6 +18,16 @@ class StudentController extends Controller
         $this->studentsService = $studentsService;
     }
 
+    public function mosques(Student $student)
+    {
+        $studentMosques = $student->mosques;
+
+        return response()->json([
+            'total' => $studentMosques->count(),
+            'mosques' => $studentMosques,
+        ]);
+    }
+
     //
     public function index(): JsonResponse
     {

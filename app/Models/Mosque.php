@@ -32,6 +32,11 @@ class Mosque extends Model
         return $this->belongsToMany(Student::class, 'mosque_student');
     }
 
+    public function tasks(): HasMany
+    {
+        return $this->hasMany(Task::class);
+    }
+
     public function points(): HasMany
     {
         return $this->hasMany(Point::class);
@@ -69,6 +74,6 @@ class Mosque extends Model
 
     public function activities(): HasMany
     {
-        return $this->hasmany(Activity::class);
+        return $this->hasMany(Activity::class);
     }
 }

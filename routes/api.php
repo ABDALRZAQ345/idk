@@ -15,8 +15,10 @@ use App\Http\Controllers\Recitation\SurahRecitationController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\StudentPointController;
 use App\Http\Controllers\StudentProfileController;
+use App\Http\Controllers\Students\StudentTaskController;
+use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TimeController;
-use App\Http\Controllers\UserForgotPasswordController;
+use App\Http\Controllers\Auth\UserForgotPasswordController;
 use App\Http\Controllers\VerificationCodeController;
 use Illuminate\Support\Facades\Route;
 
@@ -96,6 +98,30 @@ Route::middleware(['throttle:api'])->group(function () {
 
     });
 
+    Route::name('mosque.')->prefix('/mosques/{mosque}')
+        ->middleware(['auth:sanctum', 'auth.type:user', 'belongsToMosque'])
+        ->group(function () {
+
+            Route::name('task.')->prefix('/tasks')->group(function () {
+
+                Route::get('/', [TaskController::class, 'index'])
+                    ->name('index');
+
+                Route::post('/', [TaskController::class, 'store'])
+                    ->name('store');
+
+                Route::get('/{task}', [TaskController::class, 'show'])
+                    ->name('show');
+
+                Route::patch('/{task}', [TaskController::class, 'update'])
+                    ->name('update');
+
+                Route::delete('/{task}', [TaskController::class, 'destroy'])
+                    ->name('destroy');
+            });
+
+        });
+
     Route::post('/phone/verify', VerificationCodeController::class)
         ->name('phone.verify');
 
@@ -118,9 +144,31 @@ Route::middleware(['throttle:api'])->group(function () {
 
         });
 
-        Route::post('/logout', [StudentLoginController::class, 'logout'])
-            ->middleware('auth:sanctum')
-            ->name('logout');
+        Route::prefix('/{student}')->middleware(['auth:sanctum', 'auth.type:student', 'ownership'])->group(function () {
+
+            Route::name('mosque.')->prefix('/mosques')->group(function () {
+
+                Route::get('/', [StudentController::class, 'mosques'])
+                    ->name('index');
+
+                Route::prefix('/{mosque}')->middleware(['belongsToMosque'])->group(function () {
+
+                    Route::name('task.')->prefix('/tasks')->group(function () {
+
+                        Route::get('/', [StudentTaskController::class, 'index'])
+                            ->name('index');
+
+                        Route::get('/{task}', [StudentTaskController::class, 'show'])
+                            ->name('show');
+                    });
+                });
+            });
+
+            Route::post('/logout', [StudentLoginController::class, 'logout'])
+                ->name('logout');
+        });
+
+
     });
 
     Route::name('user.')->prefix('/users')->group(function () {
