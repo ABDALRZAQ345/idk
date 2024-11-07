@@ -1,13 +1,16 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Users\UserForgotPasswordPhoneRequest;
 use App\Http\Requests\Users\UserForgotPasswordRequest;
 use App\Services\Users\UserAuthService;
+use Illuminate\Http\Request;
 
 class UserForgotPasswordController extends Controller
 {
+
     private UserAuthService $userAuthService;
 
     public function __construct(UserAuthService $userAuthService)
