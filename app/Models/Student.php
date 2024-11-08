@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
@@ -17,7 +16,7 @@ class Student extends Model
 
     protected $guarded = ['id'];
 
-    protected $hidden = ['pivot','remember_token'];
+    protected $hidden = ['pivot', 'remember_token'];
 
     public function surah_recitations(): HasMany
     {
@@ -63,7 +62,6 @@ class Student extends Model
         return $this->belongsToMany(Group::class, 'mosque_student')
             ->wherePivot('mosque_id', $mosque_id)->select(['groups.name', 'groups.id', 'groups.number'])->first();
     }
-
 
     public function scopeWithPointsSum(Builder $query, $mosque_id): void
     {

@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use App\Rules\GroupBelongsToSameMosque;
 use Illuminate\Foundation\Http\FormRequest;
 
-class ActivityRequest extends FormRequest
+class LessonRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,9 +26,9 @@ class ActivityRequest extends FormRequest
             'groups' => ['required', 'array'],
             'groups.*' => ['integer', 'exists:groups,id', new GroupBelongsToSameMosque],
             'start_date' => ['required', 'date', 'date_format:Y-m-d H:i:s', 'after_or_equal:'.now()->format('Y-m-d H:i:s')],
-            'duration' => ['required', 'integer'],
-            'name' => ['required', 'string', 'max:30'],
+            'name' => ['required', 'string', 'max:50'],
             'description' => ['required', 'string', 'max:300'],
+            'type' => ['required', 'string','max:50'],
         ];
     }
 }

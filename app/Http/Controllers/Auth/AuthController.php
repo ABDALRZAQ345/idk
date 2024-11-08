@@ -12,13 +12,13 @@ class AuthController extends Controller
     ///
     public function login(Request $request) {}
 
-    public function register(Request $request)
+    public function register(Request $request): \Illuminate\Http\JsonResponse
     {
         $validated = $request->validate([
             'id' => ['required', 'integer', 'min:1'],
         ]);
 
-        $user = User::find($validated['id']);
+        $user = Student::find($validated['id']);
 
         return response()->json([
             'data' => $user,

@@ -9,7 +9,7 @@ class GroupBelongsToSameMosque implements Rule
 {
     public function passes($attribute, $value): bool
     {
-        return (Auth::user()->mosque !=null  &&   Auth::user()->mosque->groups()->find($value) != null );
+        return Auth::user()->mosque != null && Auth::user()->mosque->groups()->find($value) != null;
     }
 
     public function message(): string

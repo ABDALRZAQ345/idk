@@ -71,4 +71,9 @@ class Mosque extends Model
     {
         return $this->hasMany(Activity::class);
     }
+    public function lessons(): HasMany
+    {
+        return $this->hasMany(Lesson::class);
+    }
+
 }

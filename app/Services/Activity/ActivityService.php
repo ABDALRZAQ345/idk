@@ -2,7 +2,10 @@
 
 namespace App\Services\Activity;
 
+use App\Exceptions\NotFoundException;
+use App\Models\Activity;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class ActivityService
 {
@@ -14,28 +17,53 @@ class ActivityService
 
         $mosque = $user->mosque;
         if ($user->hasPermission('activity.read') && $mosque) {
-            $activities = $mosque->activities()->orderby('start_date')->paginate(10);
+            $activities = $mosque->activities();
         } elseif ($user->group) {
-            $activities = $user->group->activities()->orderby('start_date')->paginate(10);
+            $group=$user->group;
+            $activities = $group->activities();
         } else {
-            $activities = EmptyPagination();
+            $activities = Activity::where('id', Activity::max('id') + 1);
         }
 
         return $activities;
     }
 
+    /**
+     * @throws NotFoundException
+     */
     public function gerUserActivity(User $user, $activity_id)
     {
         $mosque = $user->mosque;
         if ($user->hasPermission('activity.read') && $user->mosque) {
-            $activity = $mosque->activities()->with('groups')->FindOrFail($activity_id);
+            $activity = $mosque->activities()->with('groups')->with('enrolledStudents')->FindOrFail($activity_id);
         } elseif ($user->group) {
-            $activity = $user->group->activities()->FindOrFail($activity_id);
+            $group=$user->group;
+            $activity = $group->activities()->with('groups')->with('enrolledStudents')->FindOrFail($activity_id);
         } else {
-            $activity = null;
+           throw new NotFoundException();
         }
 
         return $activity;
+
+    }
+
+    public function AssignStudents(Activity $activity, $students_id): void
+    {
+        try {
+            DB::beginTransaction();
+            $activity->attends()->delete();
+            foreach ($students_id as $studentId) {
+                if ($activity->enrolledStudents()->find($studentId) == null) {
+                    $activity->attends()->create([
+                        'student_id' => $studentId,
+                    ]);
+                }
+
+            }
+            DB::commit();
+        } catch (\Exception $exception) {
+            DB::rollBack();
+        }
 
     }
 }

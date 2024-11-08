@@ -1,12 +1,15 @@
 <?php
 
-use App\Http\Controllers\ActivityController;
+use App\Http\Controllers\Activity\ActivityAttendController;
+use App\Http\Controllers\Activity\ActivityController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\StudentLoginController;
 use App\Http\Controllers\Auth\StudentRegisterController;
 use App\Http\Controllers\Auth\UserAuthController;
 use App\Http\Controllers\Group\GroupController;
 use App\Http\Controllers\Group\GroupStudents;
+use App\Http\Controllers\Lesson\LessonAttendController;
+use App\Http\Controllers\Lesson\LessonController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PointController;
 use App\Http\Controllers\Recitation\PageRecitationController;
@@ -79,19 +82,31 @@ Route::middleware(['throttle:api'])->group(function () {
             Route::post('/activities', [ActivityController::class, 'store'])->middleware('permission:activity.store')->name('activities.store');
             Route::get('/activities', [ActivityController::class, 'index'])->name('activities.index');
             Route::get('/activities/{activity}', [ActivityController::class, 'show'])->name('activities.show');
+            Route::get('/activities/{activity}/attends', [ActivityAttendController::class, 'index'])->name('activities.attends.index');
+            Route::post('/activities/{activity}/attends', [ActivityAttendController::class, 'store'])->name('activities.attends.store');
             Route::post('/activities/{activity}/cancel', [ActivityController::class, 'cancel'])->middleware('permission:activity.cancel')->name('activities.delete');
+        });
+        Route::group([],function (){
+           Route::post('/lessons',[LessonController::class, 'store'])->name('lessons.store');
+           Route::get('/lessons', [LessonController::class, 'index'])->name('lessons.index');
+           Route::get('/lessons/{lesson}', [LessonController::class, 'show'])->name('lessons.show');
+           Route::get('/lessons/{lesson}/attends',[LessonAttendController::class, 'index'])->name('lessons.attends.index');
+           Route::post('/lessons/{lesson}/attends', [LessonAttendController::class, 'store'])->name('lessons.attends.store');
+           Route::post('/lessons/{lesson}/cancel',[LessonController::class, 'cancel'])->name('lessons.cancel');
         });
 
     });
 
     Route::group(['middleware' => ['auth:sanctum', 'auth.type:student']], function () {
-        Route::group(['prefix' => '/mosques/{mosque}'], function () {
-            Route::get('/me', [StudentProfileController::class, 'index']);
-            Route::get('/me/page_recitations', [StudentProfileController::class, 'pageRecitations']);
-            Route::get('/me/surah_recitations', [StudentProfileController::class, 'surahRecitations']);
-            Route::get('/me/section_recitations', [StudentProfileController::class, 'sectionRecitations']);
-            Route::get('/me/points', [StudentProfileController::class, 'points']);
-            Route::get('/me/activities', [StudentProfileController::class, 'activities']);
+
+        Route::group(['prefix' => 'students/{student}/mosques/{mosque}'], function () {
+            Route::get('/profile', [StudentProfileController::class, 'index']);
+            Route::get('/page_recitations', [StudentProfileController::class, 'pageRecitations']);
+            Route::get('/surah_recitations', [StudentProfileController::class, 'surahRecitations']);
+            Route::get('/section_recitations', [StudentProfileController::class, 'sectionRecitations']);
+            Route::get('/points', [StudentProfileController::class, 'points']);
+            Route::get('/activities', [StudentProfileController::class, 'activities']);
+            Route::get('/lessons',[StudentProfileController::class,'lessons']);
         });
 
     });

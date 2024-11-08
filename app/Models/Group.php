@@ -34,4 +34,10 @@ class Group extends Model
     {
         return $this->belongsToMany(Activity::class);
     }
+
+    public function lessons(): BelongsToMany
+    {
+        return $this->belongsToMany(Lesson::class, 'group_lesson');
+    }
+
 }

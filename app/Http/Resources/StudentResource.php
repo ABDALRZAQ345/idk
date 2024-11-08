@@ -29,7 +29,7 @@ class StudentResource extends JsonResource
             'name' => $this->name,
             'birth_date' => $this->birth_date,
             'phone_number' => $this->phone_number,
-            'total_points' => $totalPoints,
+            'points_sum' => $totalPoints,
         ];
     }
 }

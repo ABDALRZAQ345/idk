@@ -13,14 +13,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('activities', function (Blueprint $table) {
+        Schema::create('lessons', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class)->constrained();
+            $table->string('name',50);
+            $table->string('type',50);
+            $table->string('description',300);
             $table->dateTime('start_date');
-            $table->dateTime('end_date');
-            $table->string('name', 30);
-            $table->string('description', 300);
             $table->foreignIdFor(Mosque::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(User::class)->constrained();   // creator of that lesson
             $table->boolean('canceled')->default(false);
             $table->timestamps();
         });
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('activities');
+        Schema::dropIfExists('lessons');
     }
 };

@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Activity;
+use App\Models\Lesson;
 use App\Models\Mosque;
+use App\Models\Student;
 use App\Services\Recitation\PageRecitationService;
 use App\Services\Recitation\SectionRecitationService;
 use App\Services\Recitation\SurahRecitationService;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Spatie\QueryBuilder\QueryBuilder;
 
 class StudentProfileController extends Controller
 {
@@ -26,7 +29,7 @@ class StudentProfileController extends Controller
     }
 
     //
-    public function index(Mosque $mosque)
+    public function index(Student $student,Mosque $mosque)
     {
 
         $student = Auth::user();
@@ -45,7 +48,7 @@ class StudentProfileController extends Controller
         ]);
     }
 
-    public function pageRecitations(Mosque $mosque): \Illuminate\Http\JsonResponse
+    public function pageRecitations(Student $student,Mosque $mosque): \Illuminate\Http\JsonResponse
     {
         $student = Auth::user();
         $page_recitation = $this->pageRecitationService->getRecitations($student, $mosque);
@@ -55,7 +58,7 @@ class StudentProfileController extends Controller
         ]);
     }
 
-    public function surahRecitations(Mosque $mosque): \Illuminate\Http\JsonResponse
+    public function surahRecitations(Student $student,Mosque $mosque): \Illuminate\Http\JsonResponse
     {
         $student = Auth::user();
         $Surah_recitation = $this->SurahRecitationService->getRecitations($student, $mosque);
@@ -65,7 +68,7 @@ class StudentProfileController extends Controller
         ]);
     }
 
-    public function sectionRecitations(Mosque $mosque): \Illuminate\Http\JsonResponse
+    public function sectionRecitations(Student $student,Mosque $mosque): \Illuminate\Http\JsonResponse
     {
         $student = Auth::user();
         $section_recitation = $this->sectionRecitationService->getRecitations($student, $mosque);
@@ -75,7 +78,7 @@ class StudentProfileController extends Controller
         ]);
     }
 
-    public function points(Mosque $mosque): \Illuminate\Http\JsonResponse
+    public function points(Student $student,Mosque $mosque): \Illuminate\Http\JsonResponse
     {
 
         $student = Auth::user();
@@ -89,24 +92,53 @@ class StudentProfileController extends Controller
         ]);
     }
 
-    public function activities(Mosque $mosque)
+    public function activities(Request $request,Student $student, Mosque $mosque): \Illuminate\Http\JsonResponse
     {
         $student = Auth::user();
         $mosque = $student->mosques()->FindOrFail($mosque->id);
 
-        $group= $student->group($mosque->id);
+        $group = $student->group($mosque->id);
 
-        $activities = QueryBuilder::for(Activity::class)
-            ->allowedFilters(['finished'])
-            ->where('mosque_id', $mosque->id)
-            ->whereRelation('groups', function ($query) use ($group) {
-                $query->where('group_id', $group->id);
-            })
-            ->orderBy('start_date')
-            ->paginate(20);
+        $activities = Activity::whereRelation('groups', function ($query) use ($group) {
+            $query->where('group_id', $group->id);
+        });
+
+        if ($request->has('filter.finished')) {
+            if ($request->boolean('filter.finished')) {
+                $activities = $activities->where('end_date', '<=', Carbon::now());
+            } else {
+                $activities = $activities->where('end_date', '>', Carbon::now());
+            }
+        }
+        $activities = $activities->orderBy('start_date')->paginate(10);
 
         return response()->json([
             $activities,
+        ]);
+    }
+    public function lessons(Request $request,Student $student, Mosque $mosque): \Illuminate\Http\JsonResponse
+    {
+        $student = Auth::user();
+        $mosque = $student->mosques()->FindOrFail($mosque->id);
+
+        $group = $student->group($mosque->id);
+
+        $lessons = Lesson::whereRelation('groups', function ($query) use ($group) {
+            $query->where('group_id', $group->id);
+        });
+
+        if ($request->has('filter.canceled')) {
+            if ($request->boolean('filter.canceled')) {
+                $lessons = $lessons->where('canceled',  true);
+            } else {
+                $lessons = $lessons->where('canceled', false);
+            }
+        }
+
+        $lessons = $lessons->orderBy('start_date')->paginate(10);
+
+        return response()->json([
+            $lessons,
         ]);
     }
 }

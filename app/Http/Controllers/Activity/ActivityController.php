@@ -1,12 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Activity;
 
+use App\Exceptions\NotFoundException;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\ActivityRequest;
 use App\Models\Activity;
 use App\Services\Activity\ActivityService;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ActivityController extends Controller
@@ -21,11 +24,20 @@ class ActivityController extends Controller
     /**
      * @throws \Exception
      */
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
 
         $user = Auth::user();
         $activities = $this->activityService->getUserActivities($user);
+
+        if ($request->has('filter.finished')) {
+            if ($request->boolean('filter.finished')) {
+                $activities = $activities->where('end_date', '<=', Carbon::now());
+            } else {
+                $activities = $activities->where('end_date', '>', Carbon::now());
+            }
+        }
+        $activities = $activities->orderBy('start_date')->paginate(10);
 
         return response()->json($activities);
 
@@ -47,6 +59,7 @@ class ActivityController extends Controller
         $activity->groups()->attach($validated['groups']);
 
         /// TODO send notification to all student for new activity
+
         return response()->json([
             'message' => 'new activity added successfully',
         ]);
@@ -61,20 +74,22 @@ class ActivityController extends Controller
         return response()->json($activity);
     }
 
+    /**
+     * @throws NotFoundException
+     */
     public function cancel(Activity $activity): JsonResponse
     {
         $user = Auth::user();
 
-        $activity =$this->activityService->gerUserActivity($user, $activity->id);
+        $activity = $this->activityService->gerUserActivity($user, $activity->id);
 
-        if ($activity->canceled || $activity->finished) {
+        if ($activity->canceled || $activity->end_date <= now()) {
             return response()->json([
                 'message' => 'activity is already canceled or finished',
             ]);
         }
         $activity->update([
             'canceled' => true,
-            'finished' => true,
         ]);
 
         /// TODO send notification to students that the activity has canceled
