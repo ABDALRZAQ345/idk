@@ -22,17 +22,17 @@ class Ownership
 
         if ($auth instanceof Student) {
 
-            $student = $request->route('student');
+            $studentId = $request->route()->originalParameter('student');
 
-            if ($student->id !== $auth->id) {
+            if ($studentId != $auth->id) {
                 throw new AccessDeniedException;
             }
 
         } else {
 
-            $user = $request->route('user');
+            $userId = $request->route()->originalParameter('user');
 
-            if ($user->id !== $auth->id) {
+            if ($userId != $auth->id) {
                 throw new AccessDeniedException;
             }
         }
