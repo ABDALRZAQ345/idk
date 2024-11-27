@@ -1,7 +1,12 @@
 <?php
 
 use App\Http\Controllers\UserController;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
+Route::group(['middleware' => 'xss'],function (){
+
+});
+
 
 Route::get('/csrf-token', function () {
     return response()->json([
@@ -24,3 +29,4 @@ Route::name('user.')->prefix('/users')->group(function () {
 
     });
 });
+

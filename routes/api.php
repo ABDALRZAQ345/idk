@@ -21,13 +21,15 @@ use App\Http\Controllers\StudentProfileController;
 use App\Http\Controllers\TimeController;
 use App\Http\Controllers\UserForgotPasswordController;
 use App\Http\Controllers\VerificationCodeController;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['throttle:api'])->group(function () {
+Route::middleware(['throttle:api','xss'])->group(function () {
 
     Route::group(['middleware' => ['auth:sanctum', 'auth.type:user']], function () {
 
         Route::group([], function () {
+
             Route::post('/students/{student}/page_recitations', [PageRecitationController::class, 'store'])->middleware('permission:recitation.store')->name('page_recitation.store');
             Route::get('/students/{student}/page_recitations', [PageRecitationController::class, 'index'])->middleware('permission:recitation.read')->name('page_recitation.index');
             Route::delete('/students/{student}/page_recitations/{page_recitation}', [PageRecitationController::class, 'delete'])->middleware('permission:recitation.delete')->name('page_recitation.delete');
@@ -169,3 +171,4 @@ Route::middleware(['throttle:api'])->group(function () {
     Route::get('/time', [TimeController::class, 'time']);
     Route::post('/s', [AuthController::class, 'register'])->name('auth.register');
 });
+

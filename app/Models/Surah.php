@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Surah extends Model
 {
     use HasFactory;
+    protected $guarded=['id'];
 
     public $timestamps = false;
 
